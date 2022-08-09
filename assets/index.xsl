@@ -35,14 +35,28 @@ SOFTWARE.
         <link rel="icon" href="https://raw.githubusercontent.com/yegor256/cobench/master/logo.svg" type="image/svg"/>
         <link href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css.min.css" rel="stylesheet"/>
         <link href="https://cdn.jsdelivr.net/gh/yegor256/drops@gh-pages/drops.min.css" rel="stylesheet"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript">
+          $(function() {
+            $("#metrics").tablesorter();
+          });
+        </script>
       </head>
       <body>
         <xsl:apply-templates select="cobench/coders"/>
+        <p>
+          <xsl:text>The page was generated on </xsl:text>
+          <xsl:value-of select="cobench/@time"/>
+          <xsl:text>. The numbers you see reflect the activity of the last </xsl:text>
+          <xsl:value-of select="cobench/@days"/>
+          <xsl:text> days.</xsl:text>
+        </p>
       </body>
     </html>
   </xsl:template>
   <xsl:template match="cobench/coders">
-    <table>
+    <table id="metrics">
       <thead>
         <tr>
           <th/>
@@ -71,7 +85,9 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="m">
     <td>
-      <xsl:value-of select="."/>
+      <a href="{@href}">
+        <xsl:value-of select="."/>
+      </a>
     </td>
   </xsl:template>
   <xsl:template match="node()|@*">
