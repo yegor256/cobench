@@ -1,0 +1,131 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2022 Yegor Bugayenko
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the 'Software'), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+STDOUT.sync = true
+
+require 'slop'
+require 'loog'
+require 'octokit'
+require 'nokogiri'
+require 'fileutils'
+require_relative '../lib/cobench/version'
+
+loog = Loog::REGULAR
+
+def config(path)
+  f = File.expand_path(path)
+  args = []
+  args += File.readlines(f).map(&:strip) if File.exist?(f)
+  args
+end
+
+args = config('~/.cobench') + config('.cobench') + ARGV
+
+opts = Slop.parse(args, strict: true, help: true) do |o|
+  o.banner = "Usage (#{Cobench::VERSION}): cobench [options]"
+  o.bool '-h', '--help', 'Show these instructions'
+  o.bool '--version', 'Show current version'
+  o.bool '--verbose', 'Print as much log messages as possible'
+  o.bool '--dry', 'Make no real round trips to GitHub'
+  o.array '--to', 'Directory where to save all files to', default: './cobench'
+  o.array '--token', 'GitHub authentication token'
+  o.array '--coder', 'GitHub nickname of a coder to track'
+  o.array '--include', 'Mask of GitHub repo to include, e.g. yegor256/*'
+  o.array '--exclude', 'Mask of GitHub repo to exclude'
+end
+
+if opts.help?
+  puts opts
+  exit
+end
+
+if opts.verbose?
+  loog = Loog::VERBOSE
+end
+
+if opts.version?
+  loog.info(Cobench::VERSION)
+  exit
+end
+
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+
+data = {}
+
+begin
+  home = File.absolute_path(opts[:to])
+  loog.debug("All files generated will be saved to #{home}")
+  if File.exist?(home)
+    loog.debug("Directory #{home} exists")
+  else
+    FileUtils.mkdir_p(home)
+    loog.debug("Directory #{home} created")
+  end
+  if opts.token?
+    api = Octokit::Client.new(:access_token => opts[:token])
+  else
+    api = Octokit::Client.new
+    loog.warn("Connecting to GitHub without a token, this may lead to errors, use --token")
+  end
+  api.auto_paginate = true
+  opts[:coder].each do |u|
+    loog.info("Scanning #{u}...")
+    data[u] = {}
+    Dir[File.join(__dir__, '../lib/cobench/metrics/*.rb')].each do |f|
+      name = File::basename(f).split('.')[0]
+      type = "Cobench::#{name.capitalize}"
+      loog.info("Reading #{u}/#{name}...")
+      require_relative f
+      m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
+      if opts.dry?
+        v = 42
+      else
+        v = m.take(loog)
+      end
+      data[u][name] = v
+      loog.info("The value of #{u}/#{name} is #{v}")
+    end
+  end
+  builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
+    xml.cobench {
+      xml.coders {
+        data.each do |u, ms|
+          xml.coder(id: u) {
+            xml.metrics {
+              ms.each do |k, v|
+                xml.m(id: k) {
+                  xml.text v
+                }
+              end
+            }
+          }
+        end
+      }
+    }
+  end
+  index = File.join(home, 'index.xml')
+  File.write(index, builder.to_xml)
+  loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
+rescue StandardError => e
+  loog.error(e.message)
+  exit -1
+end
