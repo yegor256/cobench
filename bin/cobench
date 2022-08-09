@@ -47,7 +47,7 @@ opts = Slop.parse(args, strict: true, help: true) do |o|
   o.bool '--verbose', 'Print as much log messages as possible'
   o.bool '--dry', 'Make no real round trips to GitHub'
   o.integer '--days', 'How many days to measure', default: 7
-  o.array '--to', 'Directory where to save all files to', default: './cobench'
+  o.string '--to', 'Directory where to save all files to', default: './cobench'
   o.array '--token', 'GitHub authentication token'
   o.array '--coder', 'GitHub nickname of a coder to track'
   o.array '--include', 'Mask of GitHub repo to include, e.g. yegor256/*'
