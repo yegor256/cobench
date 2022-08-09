@@ -53,8 +53,11 @@ SOFTWARE.
           <xsl:text> on </xsl:text>
           <xsl:value-of select="cobench/@time"/>
           <xsl:text>. The numbers you see reflect the activity of the last </xsl:text>
-          <xsl:value-of select="cobench/@days"/>
-          <xsl:text> days.</xsl:text>
+          <b>
+            <xsl:value-of select="cobench/@days"/>
+            <xsl:text> days</xsl:text>
+          </b>
+          <xsl:text>.</xsl:text>
         </p>
       </body>
     </html>
