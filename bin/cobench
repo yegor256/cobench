@@ -25,6 +25,7 @@ require 'slop'
 require 'loog'
 require 'octokit'
 require 'nokogiri'
+require 'backtrace'
 require 'fileutils'
 require_relative '../lib/cobench/version'
 
@@ -123,9 +124,17 @@ begin
     }
   end
   index = File.join(home, 'index.xml')
-  File.write(index, builder.to_xml)
+  xml = builder.to_xml
+  loog.debug(xml)
+  File.write(index, xml)
   loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
+  xslt = Nokogiri::XSLT(File.read(File.join(__dir__, '../assets/index.xsl')))
+  html = xslt.transform(Nokogiri::XML(xml))
+  loog.debug(html)
+  front = File.join(home, 'index.html')
+  File.write(front, html)
+  loog.debug("HTML saved to #{front} (#{File.size(front)} bytes)")
 rescue StandardError => e
-  loog.error(e.message)
+  loog.error(Backtrace.new(e))
   exit -1
 end
