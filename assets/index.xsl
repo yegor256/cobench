@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-  <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:output encoding="UTF-8" method="html"/>
   <xsl:key name="metrics" match="/cobench/coders/coder/metrics/m" use="@id"/>
   <xsl:template match="/">
     <html>
@@ -35,15 +35,16 @@ SOFTWARE.
         <link rel="icon" href="https://raw.githubusercontent.com/yegor256/cobench/master/logo.svg" type="image/svg"/>
         <link href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css.min.css" rel="stylesheet"/>
         <link href="https://cdn.jsdelivr.net/gh/yegor256/drops@gh-pages/drops.min.css" rel="stylesheet"/>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"/>
         <script type="text/javascript">
           $(function() {
             $("#metrics").tablesorter();
           });
         </script>
         <style>
-          td, th { text-align: right; font-family: monospace; font-size: 18px; }
+          td, th { font-family: monospace; font-size: 18px; }
+          .num { text-align: right; }
           .left { border-bottom: 0; }
           header { text-align: center; }
           footer { text-align: center; font-size: 0.8em; }
@@ -90,7 +91,7 @@ SOFTWARE.
         <tr>
           <th/>
           <xsl:for-each select="coder/metrics/m[generate-id() = generate-id(key('metrics', @id)[1])]">
-            <th class="sorter">
+            <th class="sorter num">
               <xsl:value-of select="@id"/>
             </th>
           </xsl:for-each>
@@ -113,7 +114,7 @@ SOFTWARE.
     </tr>
   </xsl:template>
   <xsl:template match="m">
-    <td>
+    <td class="num">
       <a href="{@href}">
         <xsl:value-of select="."/>
       </a>

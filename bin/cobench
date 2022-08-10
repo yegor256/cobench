@@ -101,7 +101,7 @@ begin
       require_relative f
       m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
       if opts.dry?
-        v, t = [42, 'https://github.com/']
+        v, t = [Random.new.rand(100), 'https://github.com/']
       else
         v, t = m.take(loog)
       end
