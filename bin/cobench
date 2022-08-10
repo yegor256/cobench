@@ -27,6 +27,7 @@ require 'octokit'
 require 'nokogiri'
 require 'backtrace'
 require 'fileutils'
+require 'obk'
 require_relative '../lib/cobench/version'
 
 loog = Loog::REGULAR
@@ -89,6 +90,7 @@ begin
     loog.warn("Connecting to GitHub without a token, this may lead to errors, use --token")
   end
   api.auto_paginate = true
+  api = Obk.new(api, pause: 2000)
   opts[:coder].each do |u|
     loog.info("Scanning #{u}...")
     data[u] = {}
