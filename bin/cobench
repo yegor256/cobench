@@ -144,7 +144,7 @@ begin
   File.write(index, xml)
   loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
   xslt = Nokogiri::XSLT(File.read(File.join(__dir__, '../assets/index.xsl')))
-  html = xslt.transform(Nokogiri::XML(xml))
+  html = xslt.transform(Nokogiri::XML(xml), 'version' => "'#{Cobench::VERSION}'")
   loog.debug(html)
   front = File.join(home, 'index.html')
   File.write(front, html)
