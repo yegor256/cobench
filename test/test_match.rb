@@ -18,27 +18,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require_relative 'mask'
+require 'minitest/autorun'
+require 'loog'
+require_relative '../lib/cobench/match'
 
-# Match of masks.
+# Test for Match.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
 # Copyright:: Copyright (c) 2022 Yegor Bugayenko
 # License:: MIT
-class Cobench::Match
-  def initialize(opts, loog)
-    @opts = opts
-    @loog = loog
+class TestMatch < Minitest::Test
+  def test_positive
+    loog = Loog::NULL
+    opts = { include: [], exclude: [] }
+    assert Cobench::Match.new(opts, loog).matches?('foo/bar')
   end
 
-  def matches?(repo)
-    if !@opts[:include].empty? && @opts[:include].none? { |m| Cobench::Mask.new(m).matches?(repo) }
-      @loog.debug("Excluding #{repo} due to lack of --include")
-      return false
-    end
-    if @opts[:exclude].any? { |m| Cobench::Mask.new(m).matches?(repo) }
-      @loog.debug("Excluding #{repo} due to --exclude")
-      return false
-    end
-    true
+  def test_negative
+    loog = Loog::NULL
+    opts = { include: ['*/*'], exclude: ['foo/*'] }
+    assert !Cobench::Match.new(opts, loog).matches?('foo/bar')
   end
 end

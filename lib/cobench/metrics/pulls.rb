@@ -41,7 +41,7 @@ class Cobench::Pulls
     total = json.items.count do |p|
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
-      next unless Cobench::Match.new(@opts).matches?(repo)
+      next unless Cobench::Match.new(@opts, loog).matches?(repo)
       pr_json = @api.pull_request(repo, pr)
       hocs = pr_json.additions + pr_json.deletions
       hoc += hocs

@@ -40,7 +40,7 @@ class Cobench::Issues
     total = json.items.count do |p|
       pr = p.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
-      next unless Cobench::Match.new(@opts).matches?(repo)
+      next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{repo}#{pr}")
     end
     [
