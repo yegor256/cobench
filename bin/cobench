@@ -102,7 +102,10 @@ begin
       require_relative f
       m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
       if opts.dry?
-        measures = [{ title: 'Mock', total: Random.new.rand(100), href: 'https://github.com/' }]
+        measures = [
+          { title: 'Test1', total: Random.new.rand(100), href: 'https://github.com/' },
+          { title: 'Test2', total: Random.new.rand(100), href: 'https://github.com/' }
+        ]
       else
         measures = m.take(loog)
       end

@@ -24,6 +24,7 @@ SOFTWARE.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <xsl:output encoding="UTF-8" method="html"/>
+  <xsl:key name="titles" match="/cobench/titles/title" use="."/>
   <xsl:template match="/">
     <html>
       <head>
@@ -91,7 +92,7 @@ SOFTWARE.
     <thead>
       <tr>
         <th/>
-        <xsl:for-each select="title">
+        <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
           <xsl:sort select="."/>
           <th class="sorter num">
             <xsl:value-of select="."/>
