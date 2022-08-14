@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 require 'iri'
-require_relative '../mask'
+require_relative '../match'
 
 # Pulls in GitHub API.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
@@ -36,19 +36,28 @@ class Cobench::Pulls
     from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
     q = "#{@user} in:comments type:pr author:#{@user} is:merged closed:>#{from}"
     json = @api.search_issues(q)
+    loog.debug("Found #{json.total_count} pull requests")
+    hoc = 0
     total = json.items.count do |p|
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
-      if @opts[:include].none? { |m| Cobench::Mask.new(m).matches?(repo) }
-        loog.debug("Excluding #{repo}##{pr} due to lack of --include")
-        next
-      end
-      if @opts[:exclude].any? { |m| Cobench::Mask.new(m).matches?(repo) }
-        loog.debug("Excluding #{repo}##{pr} due to --exclude")
-        next
-      end
-      loog.debug("Including #{repo}#{pr}")
+      next unless Cobench::Match.new(@opts).matches?(repo)
+      pr_json = @api.pull_request(repo, pr)
+      hocs = pr_json.additions + pr_json.deletions
+      hoc += hocs
+      loog.debug("Including #{repo}##{pr} with #{hocs}")
     end
-    [total, Iri.new('https://github.com/search').add(q: q)]
+    [
+      {
+        title: 'Pulls',
+        total: total,
+        href: Iri.new('https://github.com/search').add(q: q)
+      },
+      {
+        title: 'HoC',
+        total: hoc,
+        href: ''
+      }
+    ]
   end
 end

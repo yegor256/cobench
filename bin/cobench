@@ -91,6 +91,7 @@ begin
   end
   api.auto_paginate = true
   api = Obk.new(api, pause: 2000)
+  titles = {}
   opts[:coder].each do |u|
     loog.info("Scanning #{u}...")
     data[u] = {}
@@ -101,30 +102,38 @@ begin
       require_relative f
       m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
       if opts.dry?
-        v, t = [Random.new.rand(100), 'https://github.com/']
+        measures = [{ title: 'Mock', total: Random.new.rand(100), href: 'https://github.com/' }]
       else
-        v, t = m.take(loog)
+        measures = m.take(loog)
       end
-      data[u][name] = [v, t]
-      loog.info("The value of #{u}/#{name} is #{v}")
+      measures.each do |d|
+        data[u][d[:title]] = { total: d[:total], href: d[:href] }
+        titles[d[:title]] = d[:title]
+        loog.info("The value of #{u}/#{d[:title]} is #{d[:total]}")
+      end
     end
   end
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
-    xml.cobench(time: Time.now, days: opts[:days]) {
-      xml.coders {
-        data.each do |u, ms|
-          xml.coder(id: u) {
-            xml.metrics {
-              ms.each do |k, v|
-                xml.m(id: k, href: v[1]) {
-                  xml.text v[0]
-                }
-              end
-            }
-          }
+    xml.cobench(time: Time.now, days: opts[:days]) do
+      xml.titles do
+        data.map { |_, ms| ms.keys }.flatten.each do |t|
+          xml.title t
         end
-      }
-    }
+      end
+      xml.coders do
+        data.each do |u, ms|
+          xml.coder(id: u) do
+            xml.metrics do
+              ms.each do |k, v|
+                xml.m(id: k, href: v[:href]) do
+                  xml.text v[:total]
+                end
+              end
+            end
+          end
+        end
+      end
+    end
   end
   index = File.join(home, 'index.xml')
   xml = builder.to_xml

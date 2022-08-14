@@ -24,7 +24,6 @@ SOFTWARE.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <xsl:output encoding="UTF-8" method="html"/>
-  <xsl:key name="metrics" match="/cobench/coders/coder/metrics/m" use="@id"/>
   <xsl:template match="/">
     <html>
       <head>
@@ -60,7 +59,10 @@ SOFTWARE.
             </p>
           </header>
           <article>
-            <xsl:apply-templates select="cobench/coders"/>
+            <table id="metrics">
+              <xsl:apply-templates select="cobench/titles"/>
+              <xsl:apply-templates select="cobench/coders"/>
+            </table>
           </article>
           <footer>
             <p>
@@ -85,22 +87,23 @@ SOFTWARE.
       </body>
     </html>
   </xsl:template>
+  <xsl:template match="cobench/titles">
+    <thead>
+      <tr>
+        <th/>
+        <xsl:for-each select="title">
+          <xsl:sort select="."/>
+          <th class="sorter num">
+            <xsl:value-of select="."/>
+          </th>
+        </xsl:for-each>
+      </tr>
+    </thead>
+  </xsl:template>
   <xsl:template match="cobench/coders">
-    <table id="metrics">
-      <thead>
-        <tr>
-          <th/>
-          <xsl:for-each select="coder/metrics/m[generate-id() = generate-id(key('metrics', @id)[1])]">
-            <th class="sorter num">
-              <xsl:value-of select="@id"/>
-            </th>
-          </xsl:for-each>
-        </tr>
-      </thead>
-      <tbody>
-        <xsl:apply-templates select="coder"/>
-      </tbody>
-    </table>
+    <tbody>
+      <xsl:apply-templates select="coder"/>
+    </tbody>
   </xsl:template>
   <xsl:template match="coder">
     <tr>
@@ -110,14 +113,24 @@ SOFTWARE.
           <xsl:value-of select="@id"/>
         </a>
       </td>
-      <xsl:apply-templates select="metrics/m"/>
+      <xsl:for-each select="metrics/m">
+        <xsl:sort select="@id"/>
+        <xsl:apply-templates select="."/>
+      </xsl:for-each>
     </tr>
   </xsl:template>
   <xsl:template match="m">
     <td class="num">
-      <a href="{@href}">
-        <xsl:value-of select="."/>
-      </a>
+      <xsl:choose>
+        <xsl:when test="@href">
+          <a href="{@href}">
+            <xsl:value-of select="."/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
     </td>
   </xsl:template>
   <xsl:template match="node()|@*">

@@ -18,37 +18,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require 'iri'
-require_relative '../match'
+require_relative 'mask'
 
-# Issues in GitHub API.
+# Match of masks.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
 # Copyright:: Copyright (c) 2022 Yegor Bugayenko
 # License:: MIT
-class Cobench::Issues
-  def initialize(api, user, opts)
-    @api = api
-    @user = user
+class Cobench::Match
+  def initialize(opts)
     @opts = opts
   end
 
-  def take(loog)
-    from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
-    q = "#{@user} in:comments type:issue author:#{@user} created:>#{from}"
-    json = @api.search_issues(q)
-    loog.debug("Found #{json.total_count} issues")
-    total = json.items.count do |p|
-      pr = p.url.split('/')[-1]
-      repo = p.repository_url.split('/')[-2..-1].join('/')
-      next unless Cobench::Match.new(@opts).matches?(repo)
-      loog.debug("Including #{repo}#{pr}")
+  def matches?(repo)
+    if !@opts[:include].empty? && @opts[:include].none? { |m| Cobench::Mask.new(m).matches?(repo) }
+      loog.debug("Excluding #{repo}##{pr} due to lack of --include")
+      return false
     end
-    [
-      {
-        title: 'Issues',
-        total: total,
-        href: Iri.new('https://github.com/search').add(q: q)
-      }
-    ]
+    if @opts[:exclude].any? { |m| Cobench::Mask.new(m).matches?(repo) }
+      loog.debug("Excluding #{repo}##{pr} due to --exclude")
+      return false
+    end
+    true
   end
 end
