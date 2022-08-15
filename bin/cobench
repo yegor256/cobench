@@ -51,6 +51,7 @@ opts = Slop.parse(args, strict: true, help: true) do |o|
   o.string '--to', 'Directory where to save all files to', default: './cobench'
   o.string '--token', 'GitHub authentication token'
   o.array '--coder', 'GitHub nickname of a coder to track'
+  o.array '--metrics', 'Names of metrics to use (all by default)'
   o.array '--include', 'Mask of GitHub repo to include, e.g. yegor256/*'
   o.array '--exclude', 'Mask of GitHub repo to exclude'
 end
@@ -91,12 +92,17 @@ begin
   end
   api.auto_paginate = true
   api = Obk.new(api, pause: 2000)
+  loog.info("Reading GitHub data for the last #{opts[:days]} days")
   titles = {}
   opts[:coder].each do |u|
     loog.info("Scanning #{u}...")
     data[u] = {}
     Dir[File.join(__dir__, '../lib/cobench/metrics/*.rb')].each do |f|
       name = File::basename(f).split('.')[0]
+      if !opts[:metrics].empty? && !opts[:metrics].include?(name)
+        loog.info("Ignoring #{u}/#{name} due to --metrics")
+        next
+      end
       type = "Cobench::#{name.capitalize}"
       loog.info("Reading #{u}/#{name}...")
       require_relative f
