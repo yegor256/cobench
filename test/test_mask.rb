@@ -28,8 +28,8 @@ require_relative '../lib/cobench/mask'
 class TestMask < Minitest::Test
   def test_positive
     assert Cobench::Mask.new('*/*').matches?('foo/bar')
-    assert Cobench::Mask.new('test/*').matches?('test/one')
-    assert Cobench::Mask.new('test/hello').matches?('test/hello')
+    assert Cobench::Mask.new('test/*').matches?('Test/one')
+    assert Cobench::Mask.new('test/hello').matches?('test/Hello')
   end
 
   def test_negative

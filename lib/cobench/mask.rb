@@ -24,11 +24,11 @@
 # License:: MIT
 class Cobench::Mask
   def initialize(txt)
-    @org, @repo = txt.split('/')
+    @org, @repo = txt.downcase.split('/')
   end
 
   def matches?(repo)
-    org, repo = repo.split('/')
+    org, repo = repo.downcase.split('/')
     return false if ['', nil].include?(org)
     return false if ['', nil].include?(repo)
     return false if org != @org && @org != '*'
