@@ -139,13 +139,13 @@ SOFTWARE.
   <xsl:template match="m">
     <td class="num">
       <xsl:choose>
-        <xsl:when test="@href">
+        <xsl:when test="@href = ''">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
           <a href="{@href}">
             <xsl:value-of select="."/>
           </a>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="."/>
         </xsl:otherwise>
       </xsl:choose>
     </td>
