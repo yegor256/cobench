@@ -110,13 +110,17 @@ begin
       if opts.dry?
         measures = [
           { title: 'Issues', total: Random.new.rand(100), href: 'https://github.com/' },
-          { title: 'Pulls', total: Random.new.rand(100), href: 'https://github.com/' }
+          { title: 'Pulls', total: Random.new.rand(100), href: '' },
+          { title: 'HoC', total: Random.new.rand(100), href: '' },
+          { title: 'HoC', total: Random.new.rand(100), href: '' }
         ]
       else
         measures = m.take(loog)
       end
       measures.each do |d|
-        data[u][d[:title]] = { total: d[:total], href: d[:href] }
+        before = 0
+        before += data[u][d[:title]][:total] if data[u][d[:title]] != nil
+        data[u][d[:title]] = { total: d[:total] + before, href: d[:href] }
         titles[d[:title]] = d[:title]
         loog.info("The value of #{u}/#{d[:title]} is #{d[:total]}")
       end

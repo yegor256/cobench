@@ -37,17 +37,27 @@ class Cobench::Commits
     q = "author:#{@user} author-date:>#{from}"
     json = @api.search_commits(q)
     loog.debug("Found #{json.total_count} commits")
+    hoc = 0
     total = json.items.count do |c|
       sha = c.sha
       repo = c.repository.full_name
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{sha} in #{repo}")
+      json = @api.commit(repo, sha)
+      hocs = json.stats.total
+      loog.debug("Found #{hocs} HoC in #{sha}")
+      hoc += hocs
     end
     [
       {
         title: 'Commits',
         total: total,
         href: Iri.new('https://github.com/search').add(q: q)
+      },
+      {
+        title: 'HoC',
+        total: hoc,
+        href: ''
       }
     ]
   end
