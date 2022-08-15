@@ -56,7 +56,7 @@ opts = Slop.parse(args, strict: true, help: true) do |o|
   o.array '--exclude', 'Mask of GitHub repo to exclude'
 end
 
-if opts.help?
+if opts.help? || opts[:coder].empty?
   puts opts
   exit
 end
