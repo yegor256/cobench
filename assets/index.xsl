@@ -77,9 +77,14 @@ SOFTWARE.
               <xsl:text> on </xsl:text>
               <xsl:value-of select="cobench/@time"/>
               <xsl:text>. </xsl:text>
-              <xsl:text>"Pulls" is the total number of pull requests created by the user and merged. </xsl:text>
-              <xsl:text>"Issues" is the total number of issues submitted by the user. </xsl:text>
               <xsl:text>"Commits" is the total number of commits authored by the user. </xsl:text>
+              <xsl:text>"HoC" is the total number of user's hits of code. </xsl:text>
+              <a href="https://www.yegor256.com/2014/11/14/hits-of-code.html">
+                <xsl:text>hits of code</xsl:text>
+              </a>
+              <xsl:text>. </xsl:text>
+              <xsl:text>"Issues" is the total number of issues. </xsl:text>
+              <xsl:text>"Pulls" is the total number of pull requests created by the user and merged. </xsl:text>
               <xsl:text>"Score" is an arithmetic summary of all other numbers with multipliers: </xsl:text>
               <xsl:text>one Pull costs 100 points, </xsl:text>
               <xsl:text>one Issue 50 points, </xsl:text>
