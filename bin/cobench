@@ -109,8 +109,8 @@ begin
       m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
       if opts.dry?
         measures = [
-          { title: 'Test1', total: Random.new.rand(100), href: 'https://github.com/' },
-          { title: 'Test2', total: Random.new.rand(100), href: 'https://github.com/' }
+          { title: 'Issues', total: Random.new.rand(100), href: 'https://github.com/' },
+          { title: 'Pulls', total: Random.new.rand(100), href: 'https://github.com/' }
         ]
       else
         measures = m.take(loog)
@@ -121,6 +121,22 @@ begin
         loog.info("The value of #{u}/#{d[:title]} is #{d[:total]}")
       end
     end
+  end
+  data.each do |u, ms|
+    score = ms.map do |t, h|
+      h[:total] * if t == 'HoC'
+        1
+      elsif t == 'Pulls'
+        100
+      elsif t == 'Issues'
+        50
+      elsif t == 'Commits'
+        5
+      else
+        raise "Unknown title '#{t}'"
+      end
+    end.inject(0, :+)
+    data[u]['Score'] = { total: score, href: '' }
   end
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
     xml.cobench(time: Time.now, days: opts[:days]) do

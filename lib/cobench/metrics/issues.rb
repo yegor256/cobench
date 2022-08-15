@@ -34,7 +34,7 @@ class Cobench::Issues
 
   def take(loog)
     from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
-    q = "#{@user} in:comments type:issue author:#{@user} created:>#{from}"
+    q = "in:comments type:issue author:#{@user} created:>#{from}"
     json = @api.search_issues(q)
     loog.debug("Found #{json.total_count} issues")
     total = json.items.count do |p|

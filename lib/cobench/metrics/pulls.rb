@@ -34,7 +34,7 @@ class Cobench::Pulls
 
   def take(loog)
     from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
-    q = "#{@user} in:comments type:pr author:#{@user} is:merged closed:>#{from}"
+    q = "in:comments type:pr author:#{@user} is:merged closed:>#{from}"
     json = @api.search_issues(q)
     loog.debug("Found #{json.total_count} pull requests")
     hoc = 0
