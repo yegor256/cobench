@@ -11,7 +11,7 @@ Feature: Simple Reporting
     Then Exit code is zero
 
   Scenario: Simple report
-    When I run bin/cobench with "--coder yegor256 --verbose --dry --to foo"
+    When I run bin/cobench with "--coder yegor256 --coder John --verbose --dry --to foo"
     Then Stdout contains "XML saved to"
     And Exit code is zero
 

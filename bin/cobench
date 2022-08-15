@@ -107,7 +107,7 @@ begin
       type = "Cobench::#{name.capitalize}"
       loog.info("Reading #{user}/#{name}...")
       require_relative f
-      m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
+      m = type.split('::').reduce(Module, :const_get).new(api, user, opts)
       if opts.dry?
         measures = [
           { title: 'Issues', total: Random.new.rand(100), href: 'https://github.com/' },
@@ -120,8 +120,8 @@ begin
       end
       measures.each do |d|
         before = 0
-        before += data[u][d[:title]][:total] if data[u][d[:title]] != nil
-        data[u][d[:title]] = { total: d[:total] + before, href: d[:href] }
+        before += data[user][d[:title]][:total] if data[user][d[:title]] != nil
+        data[user][d[:title]] = { total: d[:total] + before, href: d[:href] }
         titles[d[:title]] = d[:title]
         loog.info("The value of #{user}/#{d[:title]} is #{d[:total]}")
       end
