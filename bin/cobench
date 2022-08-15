@@ -95,16 +95,17 @@ begin
   loog.info("Reading GitHub data for the last #{opts[:days]} days")
   titles = {}
   opts[:coder].each do |u|
-    loog.info("Scanning #{u}...")
-    data[u] = {}
+    user = u.downcase
+    loog.info("Scanning #{user}...")
+    data[user] = {}
     Dir[File.join(__dir__, '../lib/cobench/metrics/*.rb')].each do |f|
       name = File::basename(f).split('.')[0]
       if !opts[:metrics].empty? && !opts[:metrics].include?(name)
-        loog.info("Ignoring #{u}/#{name} due to --metrics")
+        loog.info("Ignoring #{user}/#{name} due to --metrics")
         next
       end
       type = "Cobench::#{name.capitalize}"
-      loog.info("Reading #{u}/#{name}...")
+      loog.info("Reading #{user}/#{name}...")
       require_relative f
       m = type.split('::').reduce(Module, :const_get).new(api, u, opts)
       if opts.dry?
@@ -122,7 +123,7 @@ begin
         before += data[u][d[:title]][:total] if data[u][d[:title]] != nil
         data[u][d[:title]] = { total: d[:total] + before, href: d[:href] }
         titles[d[:title]] = d[:title]
-        loog.info("The value of #{u}/#{d[:title]} is #{d[:total]}")
+        loog.info("The value of #{user}/#{d[:title]} is #{d[:total]}")
       end
     end
   end
