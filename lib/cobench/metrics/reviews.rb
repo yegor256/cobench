@@ -21,11 +21,11 @@
 require 'iri'
 require_relative '../match'
 
-# Pulls in GitHub API.
+# Reviews in GitHub API.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
 # Copyright:: Copyright (c) 2022 Yegor Bugayenko
 # License:: MIT
-class Cobench::Pulls
+class Cobench::Reviews
   def initialize(api, user, opts)
     @api = api
     @user = user
@@ -34,29 +34,20 @@ class Cobench::Pulls
 
   def take(loog)
     from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
-    q = "in:comments type:pr author:#{@user} is:merged merged:>#{from}"
+    q = "reviewed-by:#{@user} merged:>#{from}"
     json = @api.search_issues(q)
-    loog.debug("Found #{json.total_count} pull requests")
-    hoc = 0
+    loog.debug("Found #{json.total_count} reviews")
     total = json.items.count do |p|
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
-      pr_json = @api.pull_request(repo, pr)
-      hocs = pr_json.additions + pr_json.deletions
-      hoc += hocs
-      loog.debug("Including #{repo}##{pr} with #{hocs}")
+      loog.debug("Including #{repo}##{pr} reviewed by #{@user}")
     end
     [
       {
-        title: 'Pulls',
+        title: 'Reviews',
         total: total,
         href: Iri.new('https://github.com/search').add(q: q)
-      },
-      {
-        title: 'HoC',
-        total: hoc,
-        href: ''
       }
     ]
   end

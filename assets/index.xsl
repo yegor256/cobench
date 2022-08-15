@@ -97,9 +97,11 @@ SOFTWARE.
                 <xsl:text>pull requests</xsl:text>
               </a>
               <xsl:text> created by the user and merged. </xsl:text>
+              <xsl:text>"Reviews" is the total number of merged pull requests reviewed by the user. </xsl:text>
               <xsl:text>"Score" is an arithmetic summary of all other numbers with multipliers: </xsl:text>
               <xsl:text>one Pull costs 100 points, </xsl:text>
               <xsl:text>one Issue 50 points, </xsl:text>
+              <xsl:text>one Review 40 points, </xsl:text>
               <xsl:text>one Commit 5 points, </xsl:text>
               <xsl:text>one HoC 1 point.</xsl:text>
             </p>

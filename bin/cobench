@@ -137,6 +137,8 @@ begin
         50
       elsif t == 'Commits'
         5
+      elsif t == 'Reviews'
+        40
       else
         raise "Unknown title '#{t}'"
       end
