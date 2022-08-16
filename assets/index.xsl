@@ -57,7 +57,9 @@ SOFTWARE.
         <section>
           <header>
             <p>
-              <img src="https://raw.githubusercontent.com/yegor256/cobench/master/logo.svg" style="width:64px"/>
+              <a href="">
+                <img src="https://raw.githubusercontent.com/yegor256/cobench/master/logo.svg" style="width:64px"/>
+              </a>
             </p>
           </header>
           <article>
