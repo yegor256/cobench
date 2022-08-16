@@ -82,7 +82,7 @@ SOFTWARE.
                 <xsl:text>Git commits</xsl:text>
               </a>
               <xsl:text> authored by the user. </xsl:text>
-              <xsl:text>"HoC" is the total number of user's hits of code. </xsl:text>
+              <xsl:text>"HoC" is the total number of user's </xsl:text>
               <a href="https://www.yegor256.com/2014/11/14/hits-of-code.html">
                 <xsl:text>hits of code</xsl:text>
               </a>
