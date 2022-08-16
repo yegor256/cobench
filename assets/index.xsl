@@ -50,7 +50,9 @@ SOFTWARE.
           header { text-align: center; }
           footer { text-align: center; font-size: 0.8em; line-height: 1.2em; color: gray; }
           article { width: 60em; border: 0; }
-          .avatar { width: 1em; height: 1em; }
+          td.avatar { vertical-align: middle; text-align: center; }
+          td.avatar img { width: 1.5em; height: 1.5em; vertical-align: middle; }
+          .subtitle { font-size: 0.8em; line-height: 1em; color: gray; }
           .sorter { cursor: pointer; }
         </style>
       </head>
@@ -142,14 +144,18 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="coder">
     <tr>
-      <td>
-        <img src="https://socatar.com/github/{@id}/64-64" class="avatar"/>
+      <td class="avatar">
+        <img src="https://socatar.com/github/{@id}/64-64"/>
       </td>
       <td>
         <a href="https://github.com/{@id}">
           <xsl:text>@</xsl:text>
           <xsl:value-of select="@id"/>
         </a>
+        <br/>
+        <span class="subtitle">
+          <xsl:value-of select="@details"/>
+        </span>
       </td>
       <xsl:for-each select="metrics/m">
         <xsl:sort select="@id"/>

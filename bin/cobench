@@ -154,7 +154,7 @@ begin
       end
       xml.coders do
         data.each do |u, ms|
-          xml.coder(id: u) do
+          xml.coder(id: u, details: api.user(u).name) do
             xml.metrics do
               ms.each do |k, v|
                 xml.m(id: k, href: v[:href]) do
