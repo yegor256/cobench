@@ -50,6 +50,7 @@ SOFTWARE.
           header { text-align: center; }
           footer { text-align: center; font-size: 0.8em; line-height: 1.2em; color: gray; }
           article { width: 60em; border: 0; }
+          .avatar { width: 1em; height: 1em; }
           .sorter { cursor: pointer; }
         </style>
       </head>
@@ -124,6 +125,7 @@ SOFTWARE.
     <thead>
       <tr>
         <th/>
+        <th/>
         <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
           <xsl:sort select="."/>
           <th class="sorter num">
@@ -140,6 +142,9 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="coder">
     <tr>
+      <td>
+        <img src="https://socatar.com/github/{@id}/64-64" class="avatar"/>
+      </td>
       <td>
         <a href="https://github.com/{@id}">
           <xsl:text>@</xsl:text>
