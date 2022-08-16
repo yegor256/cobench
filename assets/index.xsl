@@ -87,7 +87,7 @@ SOFTWARE.
                 <xsl:text>hits of code</xsl:text>
               </a>
               <xsl:text>. </xsl:text>
-              <xsl:text>"Issues" is the total number of issues. </xsl:text>
+              <xsl:text>"Issues" is the total number of issues submitted by the user. </xsl:text>
               <a href="https://docs.github.com/en/issues">
                 <xsl:text>issues</xsl:text>
               </a>
@@ -96,14 +96,14 @@ SOFTWARE.
               <a href="https://docs.github.com/en/pull-requests">
                 <xsl:text>pull requests</xsl:text>
               </a>
-              <xsl:text> created by the user and merged. </xsl:text>
-              <xsl:text>"Reviews" is the total number of merged pull requests reviewed by the user. </xsl:text>
-              <xsl:text>"Score" is an arithmetic summary of all other numbers with multipliers: </xsl:text>
+              <xsl:text> created by the user and already merged. </xsl:text>
+              <xsl:text>"Reviews" is the total number of merged pull requests that were reviewed by the user. </xsl:text>
+              <xsl:text>"Score" is an arithmetic summary of all metrics with multipliers: </xsl:text>
               <xsl:text>one Pull costs 100 points, </xsl:text>
-              <xsl:text>one Issue 50 points, </xsl:text>
-              <xsl:text>one Review 40 points, </xsl:text>
-              <xsl:text>one Commit 5 points, </xsl:text>
-              <xsl:text>one HoC 1 point.</xsl:text>
+              <xsl:text>one Issue — 50 points, </xsl:text>
+              <xsl:text>one Review — 40 points, </xsl:text>
+              <xsl:text>one Commit — 5 points, </xsl:text>
+              <xsl:text>one HoC — just 1 point.</xsl:text>
             </p>
             <p>
               <xsl:text>The numbers you see reflect the activity of the last </xsl:text>
