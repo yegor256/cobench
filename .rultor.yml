@@ -1,3 +1,5 @@
+docker:
+  image: yegor256/rultor-image:1.9.1
 assets:
   rubygems.yml: yegor256/home#assets/rubygems.yml
 install: |
@@ -16,7 +18,3 @@ release:
 merge:
   script: |-
     bundle exec rake
-deploy:
-  script: |-
-    echo "There is nothing to deploy"
-    exit -1
