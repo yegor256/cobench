@@ -15,3 +15,14 @@ Feature: Simple Reporting
     Then Stdout contains "XML saved to"
     And Exit code is zero
 
+  Scenario: Simple report with defaults
+    Given I have a ".cobench" file with content:
+    """
+    --verbose
+
+    --coder=john
+    """
+    When I run bin/cobench with "--dry"
+    Then Stdout contains "XML saved to"
+    And Exit code is zero
+
