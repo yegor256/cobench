@@ -82,11 +82,11 @@ SOFTWARE.
               <xsl:text> on </xsl:text>
               <xsl:value-of select="cobench/@time"/>
               <xsl:text>. </xsl:text>
-              <xsl:text>"Commits" is the total number of </xsl:text>
+              <xsl:text>"Commits" is the total number of non-merge </xsl:text>
               <a href="https://github.com/git-guides/git-commit">
                 <xsl:text>Git commits</xsl:text>
               </a>
-              <xsl:text> to a main/master branch, authored by the user. </xsl:text>
+              <xsl:text> to the default branch, authored by the user. </xsl:text>
               <xsl:text>"HoC" is the total number of user's </xsl:text>
               <a href="https://www.yegor256.com/2014/11/14/hits-of-code.html">
                 <xsl:text>hits of code</xsl:text>
