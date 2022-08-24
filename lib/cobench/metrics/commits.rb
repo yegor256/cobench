@@ -34,7 +34,7 @@ class Cobench::Commits
 
   def take(loog)
     from = (Time.now - (60 * 60 * 24 * @opts[:days])).strftime('%Y-%m-%d')
-    q = "author:#{@user} author-date:>#{from}"
+    q = "author:#{@user} author-date:>#{from} is:public merge:false"
     json = @api.search_commits(q)
     loog.debug("Found #{json.total_count} commits")
     hoc = 0
@@ -44,6 +44,7 @@ class Cobench::Commits
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{sha} in #{repo}")
       json = @api.commit(repo, sha)
+      next unless json
       hocs = json.stats.total
       loog.debug("Found #{hocs} HoC in #{sha}")
       hoc += hocs
