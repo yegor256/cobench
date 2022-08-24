@@ -127,21 +127,17 @@ begin
       end
     end
   end
+  weights = {
+    'HoC' => 1,
+    'Pulls' => 200,
+    'Issues' => 50,
+    'Commits' => 5,
+    'Reviews' => 75
+  }
   data.each do |u, ms|
     score = ms.map do |t, h|
-      h[:total] * if t == 'HoC'
-        1
-      elsif t == 'Pulls'
-        100
-      elsif t == 'Issues'
-        50
-      elsif t == 'Commits'
-        5
-      elsif t == 'Reviews'
-        40
-      else
-        raise "Unknown title '#{t}'"
-      end
+      raise "Unknown title '#{t}'" unless weights.key?(t)
+      h[:total] * weights[t]
     end.inject(0, :+)
     data[u]['Score'] = { total: score, href: '' }
   end
@@ -150,6 +146,13 @@ begin
       xml.titles do
         data.map { |_, ms| ms.keys }.flatten.each do |t|
           xml.title t
+        end
+      end
+      xml.weights do
+        weights.each do |t, w|
+          xml.w(id: t) do
+            xml.text w
+          end
         end
       end
       xml.coders do

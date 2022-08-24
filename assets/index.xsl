@@ -86,7 +86,7 @@ SOFTWARE.
               <a href="https://github.com/git-guides/git-commit">
                 <xsl:text>Git commits</xsl:text>
               </a>
-              <xsl:text> authored by the user. </xsl:text>
+              <xsl:text> to a main/master branch, authored by the user. </xsl:text>
               <xsl:text>"HoC" is the total number of user's </xsl:text>
               <a href="https://www.yegor256.com/2014/11/14/hits-of-code.html">
                 <xsl:text>hits of code</xsl:text>
@@ -104,11 +104,34 @@ SOFTWARE.
               <xsl:text> created by the user and already merged. </xsl:text>
               <xsl:text>"Reviews" is the total number of merged pull requests that were reviewed by the user. </xsl:text>
               <xsl:text>"Score" is an arithmetic summary of all metrics with multipliers: </xsl:text>
-              <xsl:text>one Pull costs 100 points, </xsl:text>
-              <xsl:text>one Issue — 50 points, </xsl:text>
-              <xsl:text>one Review — 40 points, </xsl:text>
-              <xsl:text>one Commit — 5 points, </xsl:text>
-              <xsl:text>one HoC — just 1 point.</xsl:text>
+              <xsl:for-each select="cobench/weights/w">
+                <xsl:if test="position() &gt; 1">
+                  <xsl:text>, </xsl:text>
+                </xsl:if>
+                <xsl:text>one </xsl:text>
+                <xsl:choose>
+                  <xsl:when test="substring(@id, string-length(@id)) = 's'">
+                    <xsl:value-of select="substring(@id, 0, string-length(@id))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="@id"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                  <xsl:when test="position() = 1">
+                    <xsl:text> costs </xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:text> — </xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <xsl:value-of select="text()"/>
+                <xsl:text> point</xsl:text>
+                <xsl:if test="text() != '1'">
+                  <xsl:text>s</xsl:text>
+                </xsl:if>
+              </xsl:for-each>
+              <xsl:text>.</xsl:text>
             </p>
             <p>
               <xsl:text>The numbers you see reflect the activity of the last </xsl:text>
