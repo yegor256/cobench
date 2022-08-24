@@ -35,7 +35,7 @@ loog = Loog::REGULAR
 def config(path)
   f = File.expand_path(path)
   args = []
-  args += File.readlines(f).map(&:strip) if File.exist?(f)
+  args += File.readlines(f).map(&:strip).reject { |a| a.empty? } if File.exist?(f)
   args
 end
 
