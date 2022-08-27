@@ -26,6 +26,8 @@ Then, run it locally and read its output:
 $ cobench --coder yegor256 --verbose
 ```
 
+This is how our report [looks like](https://github.com/cqfn/bench).
+
 ## How to contribute
 
 Read [these guidelines](https://www.yegor256.com/2014/04/15/github-guidelines.html).
