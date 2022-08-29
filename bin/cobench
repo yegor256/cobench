@@ -47,6 +47,7 @@ opts = Slop.parse(args, strict: true, help: true) do |o|
   o.bool '--version', 'Show current version'
   o.bool '--verbose', 'Print as much log messages as possible'
   o.bool '--dry', 'Make no real round trips to GitHub'
+  o.bool '--reuse', 'Don\'t fetch from GitHub, reuse the existing XML file'
   o.integer '--days', 'How many days to measure', default: 7
   o.string '--to', 'Directory where to save all files to', default: './cobench'
   o.string '--token', 'GitHub authentication token'
@@ -73,17 +74,7 @@ end
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-data = {}
-
-begin
-  home = File.absolute_path(opts[:to])
-  loog.debug("All files generated will be saved to #{home}")
-  if File.exist?(home)
-    loog.debug("Directory #{home} exists")
-  else
-    FileUtils.mkdir_p(home)
-    loog.debug("Directory #{home} created")
-  end
+def build_xml(opts, loog)
   if opts.token?
     api = Octokit::Client.new(:access_token => opts[:token])
   else
@@ -94,6 +85,7 @@ begin
   api = Obk.new(api, pause: 2000)
   loog.info("Reading GitHub data for the last #{opts[:days]} days")
   titles = {}
+  data = {}
   opts[:coder].each do |u|
     user = u.downcase
     loog.info("Scanning #{user}...")
@@ -188,11 +180,27 @@ begin
       end
     end
   end
-  index = File.join(home, 'index.xml')
   xml = builder.to_xml
   loog.debug(xml)
-  File.write(index, xml)
-  loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
+  xml
+end
+begin
+  home = File.absolute_path(opts[:to])
+  loog.debug("All files generated will be saved to #{home}")
+  if File.exist?(home)
+    loog.debug("Directory #{home} exists")
+  else
+    FileUtils.mkdir_p(home)
+    loog.debug("Directory #{home} created")
+  end
+  index = File.join(home, 'index.xml')
+  if opts[:reuse]
+    xml = File.read(index)
+  else
+    xml = build_xml(opts, loog)
+    File.write(index, xml)
+    loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
+  end
   xslt = Nokogiri::XSLT(File.read(File.join(__dir__, '../assets/index.xsl')))
   html = xslt.transform(Nokogiri::XML(xml), 'version' => "'#{Cobench::VERSION}'")
   loog.debug(html)

@@ -187,7 +187,7 @@ SOFTWARE.
     </tr>
   </xsl:template>
   <xsl:template match="m">
-    <td class="num">
+    <xsl:variable name="body">
       <xsl:choose>
         <xsl:when test="@href = ''">
           <xsl:value-of select="."/>
@@ -198,9 +198,21 @@ SOFTWARE.
           </a>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:variable>
+    <td class="num">
       <xsl:if test="@actual">
+        <xsl:choose>
+          <xsl:when test="@actual">
+            <span class="firebrick">
+              <xsl:value-of select="$body"/>
+            </span>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$body"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <br/>
-        <span class="subtitle firebrick" title="The actual value of the metric was capped">
+        <span class="subtitle" title="The actual value of the metric was capped">
           <xsl:value-of select="@actual"/>
         </span>
       </xsl:if>
