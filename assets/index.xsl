@@ -198,6 +198,12 @@ SOFTWARE.
           </a>
         </xsl:otherwise>
       </xsl:choose>
+      <xsl:if test="@actual">
+        <br/>
+        <span class="subtitle firebrick" title="The actual value of the metric was capped">
+          <xsl:value-of select="@actual"/>
+        </span>
+      </xsl:if>
     </td>
   </xsl:template>
   <xsl:template match="node()|@*">

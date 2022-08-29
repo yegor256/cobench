@@ -111,9 +111,10 @@ begin
       if opts.dry?
         measures = [
           { title: 'Issues', total: Random.new.rand(100), href: 'https://github.com/' },
-          { title: 'Pulls', total: Random.new.rand(100), href: '' },
-          { title: 'HoC', total: Random.new.rand(100), href: '' },
-          { title: 'HoC', total: Random.new.rand(100), href: '' }
+          { title: 'Pulls', total: Random.new.rand(100) },
+          { title: 'Commits', total: Random.new.rand(100) },
+          { title: 'HoC', total: Random.new.rand(100) },
+          { title: 'HoC', total: Random.new.rand(100) }
         ]
       else
         measures = m.take(loog)
@@ -126,6 +127,20 @@ begin
         loog.info("The value of #{user}/#{d[:title]} is #{d[:total]}")
       end
     end
+  end
+  caps = {
+    'HoC' => lambda { |ms| ms['Commits'][:total] * 1000 },
+  }
+  data.each do |u, ms|
+    ms.map do |t, h|
+      next unless caps.key?(t)
+      cap = caps[t].call(ms)
+      if h[:total] > cap
+        data[u][t][:actual] = h[:total]
+        data[u][t][:total] = cap
+      end
+    end
+    data[u] = ms
   end
   weights = {
     'HoC' => 1,
@@ -157,10 +172,13 @@ begin
       end
       xml.coders do
         data.each do |u, ms|
-          xml.coder(id: u, details: api.user(u).name) do
+          xml.coder(id: u) do
+            xml.parent.set_attribute('details', api.user(u).name)
             xml.metrics do
               ms.each do |k, v|
                 xml.m(id: k, href: v[:href]) do
+                  xml.parent.set_attribute('actual', v[:actual]) unless v[:actual].nil?
+                  xml.parent.set_attribute('href', v[:href]) unless v[:href].nil?
                   xml.text v[:total]
                 end
               end
