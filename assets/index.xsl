@@ -200,17 +200,17 @@ SOFTWARE.
       </xsl:choose>
     </xsl:variable>
     <td class="num">
-      <xsl:if test="@actual">
-        <xsl:choose>
-          <xsl:when test="@actual">
-            <span class="firebrick">
-              <xsl:value-of select="$body"/>
-            </span>
-          </xsl:when>
-          <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="@actual">
+          <span class="firebrick">
             <xsl:value-of select="$body"/>
-          </xsl:otherwise>
-        </xsl:choose>
+          </span>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$body"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="@actual">
         <br/>
         <span class="subtitle" title="The actual value of the metric was capped">
           <xsl:value-of select="@actual"/>
