@@ -175,10 +175,12 @@ SOFTWARE.
           <xsl:text>@</xsl:text>
           <xsl:value-of select="@id"/>
         </a>
-        <br/>
-        <span class="subtitle">
-          <xsl:value-of select="@details"/>
-        </span>
+        <xsl:if test="@details">
+          <br/>
+          <span class="subtitle">
+            <xsl:value-of select="@details"/>
+          </span>
+        </xsl:if>
       </td>
       <xsl:for-each select="metrics/m">
         <xsl:sort select="@id"/>

@@ -165,7 +165,7 @@ def build_xml(opts, loog)
       xml.coders do
         data.each do |u, ms|
           xml.coder(id: u) do
-            xml.parent.set_attribute('details', api.user(u).name)
+            xml.parent.set_attribute('details', api.user(u).name) unless opts[:dry]
             xml.metrics do
               ms.each do |k, v|
                 xml.m(id: k) do
