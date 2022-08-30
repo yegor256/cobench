@@ -151,7 +151,7 @@ def build_xml(opts, loog)
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
     xml.cobench(time: Time.now, days: opts[:days]) do
       xml.titles do
-        data.map { |_, ms| ms.keys }.flatten.each do |t|
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
           xml.title t
         end
       end

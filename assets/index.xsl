@@ -189,7 +189,7 @@ SOFTWARE.
   <xsl:template match="m">
     <xsl:variable name="body">
       <xsl:choose>
-        <xsl:when test="@href = ''">
+        <xsl:when test="not(@href) or @href = ''">
           <xsl:value-of select="."/>
         </xsl:when>
         <xsl:otherwise>
