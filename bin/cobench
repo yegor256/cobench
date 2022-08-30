@@ -136,10 +136,10 @@ def build_xml(opts, loog)
   end
   weights = {
     'HoC' => 1,
-    'Pulls' => 200,
+    'Pulls' => 250,
     'Issues' => 50,
     'Commits' => 5,
-    'Reviews' => 75
+    'Reviews' => 150
   }
   data.each do |u, ms|
     score = ms.map do |t, h|
