@@ -57,8 +57,7 @@ class Cobench::Commits
       },
       {
         title: 'HoC',
-        total: hoc,
-        href: ''
+        total: hoc
       }
     ]
   end

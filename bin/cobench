@@ -146,7 +146,7 @@ def build_xml(opts, loog)
       raise "Unknown title '#{t}'" unless weights.key?(t)
       h[:total] * weights[t]
     end.inject(0, :+)
-    data[u]['Score'] = { total: score, href: '' }
+    data[u]['Score'] = { total: score }
   end
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
     xml.cobench(time: Time.now, days: opts[:days]) do
@@ -168,7 +168,7 @@ def build_xml(opts, loog)
             xml.parent.set_attribute('details', api.user(u).name)
             xml.metrics do
               ms.each do |k, v|
-                xml.m(id: k, href: v[:href]) do
+                xml.m(id: k) do
                   xml.parent.set_attribute('actual', v[:actual]) unless v[:actual].nil?
                   xml.parent.set_attribute('href', v[:href]) unless v[:href].nil?
                   xml.text v[:total]
