@@ -140,6 +140,12 @@ SOFTWARE.
                 <xsl:text> days</xsl:text>
               </b>
               <xsl:text>.</xsl:text>
+              <br/>
+              <xsl:text>The XML with the data </xsl:text>
+              <a href="index.xml">
+                <xsl:text>is here</xsl:text>
+              </a>
+              <xsl:text>.</xsl:text>
             </p>
           </footer>
         </section>
