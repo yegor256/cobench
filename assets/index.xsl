@@ -211,11 +211,11 @@ SOFTWARE.
       <xsl:choose>
         <xsl:when test="@actual">
           <span class="firebrick">
-            <xsl:value-of select="$body"/>
+            <xsl:copy-of select="$body"/>
           </span>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="$body"/>
+          <xsl:copy-of select="$body"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="@actual">
