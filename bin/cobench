@@ -74,6 +74,11 @@ end
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+def div(a, b)
+  return 0 if b == 0
+  a / b
+end
+
 def build_xml(opts, loog)
   if opts.token?
     api = Octokit::Client.new(:access_token => opts[:token])
@@ -150,11 +155,11 @@ def build_xml(opts, loog)
   end
   averages = {
     'HpP': {
-      f: lambda { |ms| ms['HoC'][:total] / ms['Pulls'][:total] },
+      f: lambda { |ms| div(ms['HoC'][:total], ms['Pulls'][:total]) },
       title: 'HoC per Pull'
     },
     'HpC': {
-      f: lambda { |ms| ms['HoC'][:total] / ms['Commits'][:total] },
+      f: lambda { |ms| div(ms['HoC'][:total], ms['Commits'][:total]) },
       title: 'HoC per Commit'
     }
   }
@@ -194,7 +199,7 @@ def build_xml(opts, loog)
           next if t == 'Score'
           xml.w(id: t) do
             vals = data.values.map { |ms| ms[t][:total] }.select { |v| v > 0 }
-            xml.text(vals.inject(&:+) / vals.count)
+            xml.text(div(vals.inject(&:+), vals.count))
           end
         end
       end
