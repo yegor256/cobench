@@ -67,9 +67,14 @@ SOFTWARE.
           </header>
           <article>
             <table id="metrics">
-              <xsl:apply-templates select="cobench/titles"/>
+              <thead>
+                <xsl:apply-templates select="cobench/titles"/>
+              </thead>
               <xsl:apply-templates select="cobench/coders"/>
-              <xsl:apply-templates select="cobench/totals"/>
+              <tfoot>
+                <xsl:apply-templates select="cobench/totals"/>
+              <xsl:apply-templates select="cobench/averages"/>
+              </tfoot>
             </table>
           </article>
           <footer>
@@ -154,33 +159,42 @@ SOFTWARE.
     </html>
   </xsl:template>
   <xsl:template match="cobench/titles">
-    <thead>
-      <tr>
-        <th/>
-        <th/>
-        <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
-          <xsl:sort select="."/>
-          <th class="sorter num">
-            <xsl:value-of select="."/>
-          </th>
-        </xsl:for-each>
-      </tr>
-    </thead>
+    <tr>
+      <th/>
+      <th/>
+      <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
+        <xsl:sort select="."/>
+        <th class="sorter num">
+          <xsl:value-of select="."/>
+        </th>
+      </xsl:for-each>
+    </tr>
   </xsl:template>
   <xsl:template match="cobench/totals">
     <xsl:variable name="totals" select="."/>
-    <tfoot>
-      <tr>
-        <td colspan="2" style="text-align:right">Total:</td>
-        <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
-          <xsl:sort select="."/>
-          <xsl:variable name="t" select="."/>
-          <td class="num">
-            <xsl:value-of select="$totals/w[@id=$t]"/>
-          </td>
-        </xsl:for-each>
-      </tr>
-    </tfoot>
+    <tr>
+      <td colspan="2" style="text-align:right">Total:</td>
+      <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
+        <xsl:sort select="."/>
+        <xsl:variable name="t" select="."/>
+        <td class="num">
+          <xsl:value-of select="$totals/w[@id=$t]"/>
+        </td>
+      </xsl:for-each>
+    </tr>
+  </xsl:template>
+  <xsl:template match="cobench/averages">
+    <xsl:variable name="averages" select="."/>
+    <tr>
+      <td colspan="2" style="text-align:right">Average:</td>
+      <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
+        <xsl:sort select="."/>
+        <xsl:variable name="t" select="."/>
+        <td class="num">
+          <xsl:value-of select="$averages/w[@id=$t]"/>
+        </td>
+      </xsl:for-each>
+    </tr>
   </xsl:template>
   <xsl:template match="cobench/coders">
     <tbody>

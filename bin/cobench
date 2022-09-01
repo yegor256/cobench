@@ -186,6 +186,14 @@ def build_xml(opts, loog)
           end
         end
       end
+      xml.averages do
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
+          next if t == 'Score'
+          xml.w(id: t) do
+            xml.text(data.values.map { |ms| ms[t][:total] }.inject(&:+) / data.values.count)
+          end
+        end
+      end
       xml.coders do
         data.each do |u, ms|
           xml.coder(id: u) do
