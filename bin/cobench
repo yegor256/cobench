@@ -121,7 +121,7 @@ def build_xml(opts, loog)
     end
   end
   caps = {
-    'HoC' => lambda { |ms| ms['Commits'][:total] * 512 },
+    'HoC' => lambda { |ms| ms['Pulls'][:total] * 1024 },
   }
   data.each do |u, ms|
     ms.map do |t, h|
