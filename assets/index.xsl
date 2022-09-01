@@ -140,6 +140,19 @@ SOFTWARE.
               <xsl:text>.</xsl:text>
             </p>
             <p>
+              <xsl:for-each select="cobench/titles/title[@subtitle]">
+                <xsl:if test="position() &gt; 1">
+                  <xsl:text>, </xsl:text>
+                </xsl:if>
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="."/>
+                <xsl:text>"</xsl:text>
+                <xsl:text> stands for </xsl:text>
+                <xsl:value-of select="@subtitle"/>
+              </xsl:for-each>
+              <xsl:text>.</xsl:text>
+            </p>
+            <p>
               <xsl:text>The numbers you see reflect the activity of the last </xsl:text>
               <b>
                 <xsl:value-of select="cobench/@days"/>

@@ -167,7 +167,10 @@ def build_xml(opts, loog)
     xml.cobench(time: Time.now, days: opts[:days]) do
       xml.titles do
         data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
-          xml.title t
+          xml.title do
+            xml.parent.set_attribute('subtitle', averages[t][:title]) if averages.key?(t)
+            xml.text t
+          end
         end
       end
       xml.weights do
