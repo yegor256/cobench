@@ -148,6 +148,21 @@ def build_xml(opts, loog)
     end.inject(0, :+)
     data[u]['Score'] = { total: score }
   end
+  averages = {
+    'HpP': {
+      f: lambda { |ms| ms['HoC'][:total] / ms['Pulls'][:total] },
+      title: 'HoC per Pull'
+    },
+    'HpC': {
+      f: lambda { |ms| ms['HoC'][:total] / ms['Commits'][:total] },
+      title: 'HoC per Commit'
+    }
+  }
+  data.each do |u, ms|
+    averages.each do |k, a|
+      data[u][k] = { total: a[:f].call(ms) }
+    end
+  end
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
     xml.cobench(time: Time.now, days: opts[:days]) do
       xml.titles do
@@ -158,7 +173,16 @@ def build_xml(opts, loog)
       xml.weights do
         weights.each do |t, w|
           xml.w(id: t) do
-            xml.text w
+            xml.text(w)
+          end
+        end
+      end
+      xml.totals do
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
+          next if t == 'Score'
+          next if averages.key?(t)
+          xml.w(id: t) do
+            xml.text(data.values.map { |ms| ms[t][:total] }.inject(&:+))
           end
         end
       end

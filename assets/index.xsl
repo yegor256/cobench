@@ -69,6 +69,7 @@ SOFTWARE.
             <table id="metrics">
               <xsl:apply-templates select="cobench/titles"/>
               <xsl:apply-templates select="cobench/coders"/>
+              <xsl:apply-templates select="cobench/totals"/>
             </table>
           </article>
           <footer>
@@ -165,6 +166,21 @@ SOFTWARE.
         </xsl:for-each>
       </tr>
     </thead>
+  </xsl:template>
+  <xsl:template match="cobench/totals">
+    <xsl:variable name="totals" select="."/>
+    <tfoot>
+      <tr>
+        <td colspan="2" style="text-align:right">Total:</td>
+        <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
+          <xsl:sort select="."/>
+          <xsl:variable name="t" select="."/>
+          <td class="num">
+            <xsl:value-of select="$totals/w[@id=$t]"/>
+          </td>
+        </xsl:for-each>
+      </tr>
+    </tfoot>
   </xsl:template>
   <xsl:template match="cobench/coders">
     <tbody>
