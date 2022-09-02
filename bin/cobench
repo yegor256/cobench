@@ -79,6 +79,11 @@ def div(a, b)
   a / b
 end
 
+def actual(ms)
+  return ms[:actual] if ms.key?(:actual)
+  ms[:total]
+end
+
 def build_xml(opts, loog)
   if opts.token?
     api = Octokit::Client.new(:access_token => opts[:token])
@@ -155,11 +160,11 @@ def build_xml(opts, loog)
   end
   averages = {
     'HpP': {
-      f: lambda { |ms| div(ms['HoC'][:total], ms['Pulls'][:total]) },
+      f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Pulls'])) },
       title: 'HoC per Pull'
     },
     'HpC': {
-      f: lambda { |ms| div(ms['HoC'][:total], ms['Commits'][:total]) },
+      f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
       title: 'HoC per Commit'
     }
   }
