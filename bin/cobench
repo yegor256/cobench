@@ -195,7 +195,7 @@ def build_xml(opts, loog)
           next if t == 'Score'
           next if averages.key?(t)
           xml.w(id: t) do
-            xml.text(data.values.map { |ms| ms[t][:total] }.inject(&:+))
+            xml.text(data.values.map { |ms| actual(ms[t]) }.inject(&:+))
           end
         end
       end
@@ -203,7 +203,7 @@ def build_xml(opts, loog)
         data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
           next if t == 'Score'
           xml.w(id: t) do
-            vals = data.values.map { |ms| ms[t][:total] }.select { |v| v > 0 }
+            vals = data.values.map { |ms| actual(ms[t]) }.select { |v| v > 0 }
             xml.text(div(vals.inject(&:+), vals.count))
           end
         end

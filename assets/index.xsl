@@ -173,8 +173,7 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="cobench/titles">
     <tr>
-      <th/>
-      <th/>
+      <th colspan="2"/>
       <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
         <xsl:sort select="."/>
         <th class="sorter num">
