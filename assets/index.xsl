@@ -23,9 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-  <xsl:output encoding="UTF-8" method="html"/>
+  <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:param name="version"/>
-  <xsl:key name="titles" match="/cobench/titles/title" use="."/>
   <xsl:template match="/">
     <html>
       <head>
@@ -47,9 +46,10 @@ SOFTWARE.
           td, th { font-family: monospace; font-size: 18px; }
           .num { text-align: right; }
           .left { border-bottom: 0; }
+          section { width: 100%; }
           header { text-align: center; }
           footer { text-align: center; font-size: 0.8em; line-height: 1.2em; color: gray; }
-          article { width: 60em; border: 0; }
+          article { border: 0; }
           td.avatar { vertical-align: middle; text-align: center; }
           td.avatar img { width: 1.5em; height: 1.5em; vertical-align: middle; }
           .subtitle { font-size: 0.8em; line-height: 1em; color: gray; }
@@ -67,6 +67,14 @@ SOFTWARE.
           </header>
           <article>
             <table id="metrics">
+              <colgroup>
+                <col/>
+                <col/>
+                <xsl:for-each select="cobench/titles/title">
+                  <xsl:sort select="."/>
+                  <col/>
+                </xsl:for-each>
+              </colgroup>
               <thead>
                 <xsl:apply-templates select="cobench/titles"/>
               </thead>
@@ -174,7 +182,7 @@ SOFTWARE.
   <xsl:template match="cobench/titles">
     <tr>
       <th colspan="2"/>
-      <xsl:for-each select="title[generate-id() = generate-id(key('titles', .)[1])]">
+      <xsl:for-each select="title">
         <xsl:sort select="."/>
         <th class="sorter num">
           <xsl:value-of select="."/>
@@ -186,7 +194,7 @@ SOFTWARE.
     <xsl:variable name="totals" select="."/>
     <tr>
       <td colspan="2" style="text-align:right">Total:</td>
-      <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
+      <xsl:for-each select="/cobench/titles/title">
         <xsl:sort select="."/>
         <xsl:variable name="t" select="."/>
         <td class="num">
@@ -199,7 +207,7 @@ SOFTWARE.
     <xsl:variable name="averages" select="."/>
     <tr>
       <td colspan="2" style="text-align:right">Average:</td>
-      <xsl:for-each select="/cobench/titles/title[generate-id() = generate-id(key('titles', .)[1])]">
+      <xsl:for-each select="/cobench/titles/title">
         <xsl:sort select="."/>
         <xsl:variable name="t" select="."/>
         <td class="num">
