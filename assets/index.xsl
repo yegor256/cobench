@@ -50,7 +50,7 @@ SOFTWARE.
           td, th { font-family: monospace; font-size: 18px; }
           .num { text-align: right; }
           .left { border-bottom: 0; }
-          section { width: 100%; }
+          section { width: auto; }
           header { text-align: center; }
           footer { text-align: center; font-size: 0.8em; line-height: 1.2em; color: gray; }
           article { border: 0; }
