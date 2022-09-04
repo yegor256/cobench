@@ -43,7 +43,7 @@ class Cobench::Pulls
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
-      orgs += p.repository_url.split('/')[-2]
+      orgs << p.repository_url.split('/')[-2]
       pr_json = @api.pull_request(repo, pr)
       hocs = pr_json.additions + pr_json.deletions
       hoc += hocs

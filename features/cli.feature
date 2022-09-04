@@ -15,6 +15,11 @@ Feature: Simple Reporting
     Then Stdout contains "XML saved to"
     And Exit code is zero
 
+  Scenario: Simple report through real GitHub API
+    When I run bin/cobench with "--coder=yegor256 --include=*/* --days=1 --verbose"
+    Then Stdout contains "XML saved to"
+    And Exit code is zero
+
   Scenario: Simple report with defaults
     Given I have a ".cobench" file with content:
     """
