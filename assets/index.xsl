@@ -144,6 +144,7 @@ SOFTWARE.
                 <xsl:text>issues</xsl:text>
               </a>
               <xsl:text>. </xsl:text>
+              <xsl:text>"Msgs" is the total number of messages posted as a reviewer in pull requests. </xsl:text>
               <xsl:text>"Pulls" is the total number of </xsl:text>
               <a href="https://docs.github.com/en/pull-requests">
                 <xsl:text>pull requests</xsl:text>

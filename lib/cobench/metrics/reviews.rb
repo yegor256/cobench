@@ -37,17 +37,25 @@ class Cobench::Reviews
     q = "reviewed-by:#{@user} merged:>#{from}"
     json = @api.search_issues(q)
     loog.debug("Found #{json.total_count} reviews")
+    msgs = 0
     total = json.items.count do |p|
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
-      loog.debug("Including #{repo}##{pr} reviewed by #{@user}")
+      loog.debug("Including #{repo}##{pr} reviewed by @#{@user}")
+      posted = @api.pull_request_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
+      loog.debug("#{posted} messages posted by @#{@user} to #{repo}##{pr}")
+      msgs += posted
     end
     [
       {
         title: 'Reviews',
         total: total,
         href: Iri.new('https://github.com/search').add(q: q)
+      },
+      {
+        title: 'Msgs',
+        total: msgs
       }
     ]
   end

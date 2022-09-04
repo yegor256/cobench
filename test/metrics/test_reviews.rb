@@ -18,27 +18,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require_relative 'mask'
+require 'minitest/autorun'
+require 'octokit'
+require 'loog'
+require_relative '../../lib/cobench/metrics/reviews'
 
-# Match of masks.
+# Test for Reviews.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
 # Copyright:: Copyright (c) 2022 Yegor Bugayenko
 # License:: MIT
-class Cobench::Match
-  def initialize(opts, loog)
-    @opts = opts
-    @loog = loog
-  end
-
-  def matches?(repo)
-    if @opts[:include] && !@opts[:include].empty? && @opts[:include].none? { |m| Cobench::Mask.new(m).matches?(repo) }
-      @loog.debug("Excluding #{repo} due to lack of --include")
-      return false
-    end
-    if @opts[:exclude] && @opts[:exclude].any? { |m| Cobench::Mask.new(m).matches?(repo) }
-      @loog.debug("Excluding #{repo} due to --exclude")
-      return false
-    end
-    true
+class TestReviews < Minitest::Test
+  def test_real
+    api = Octokit::Client.new
+    m = Cobench::Reviews.new(api, 'graur', { days: 2 })
+    ms = m.take(Loog::VERBOSE)
+    assert !ms.empty?
   end
 end
