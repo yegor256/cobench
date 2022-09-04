@@ -98,6 +98,16 @@ SOFTWARE.
               <xsl:text> to see all.</xsl:text>
             </p>
             <table id="metrics">
+              <xsl:attribute name="data-sortlist">
+                <xsl:text>[[</xsl:text>
+                <xsl:for-each select="cobench/titles/title">
+                  <xsl:sort select="."/>
+                  <xsl:if test=". = 'Score'">
+                    <xsl:value-of select="position() + 2"/>
+                  </xsl:if>
+                </xsl:for-each>
+                <xsl:text>,1]]</xsl:text>
+              </xsl:attribute>
               <colgroup>
                 <col/>
                 <col style="width: 2.5em;"/>
