@@ -38,16 +38,23 @@ class Cobench::Pulls
     json = @api.search_issues(q)
     loog.debug("Found #{json.total_count} pull requests")
     hoc = 0
+    orgs = []
     total = json.items.count do |p|
       pr = p.pull_request.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
+      orgs += p.repository_url.split('/')[-2]
       pr_json = @api.pull_request(repo, pr)
       hocs = pr_json.additions + pr_json.deletions
       hoc += hocs
       loog.debug("Including #{repo}##{pr} with #{hocs}")
     end
     [
+      {
+        meta: true,
+        title: 'Orgs',
+        list: orgs
+      },
       {
         title: 'Pulls',
         total: total,

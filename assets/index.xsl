@@ -23,7 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-  <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:output method="xml" doctype-system="about:legacy-compat" encoding="UTF-8" indent="yes"/>
+  <xsl:strip-spaces select="*"/>
   <xsl:param name="version"/>
   <xsl:template match="/">
     <html>
@@ -45,6 +46,16 @@ SOFTWARE.
           $(function() {
             $("#metrics").tablesorter();
           });
+          $(function() {
+            let params = (new URL(document.location)).searchParams;
+            let org = params.get('org');
+            if (org) {
+              $('#metrics tbody tr:not(:has(&gt;td.org-' + org + '))').hide();
+              $('#org').text('@' + org);
+              $('#org-head').css('visibility', 'visible');
+              console.log('Showing @' + org + ' org');
+            }
+          });
         </script>
         <style>
           td, th { font-family: monospace; font-size: 18px; }
@@ -55,7 +66,8 @@ SOFTWARE.
           footer { text-align: center; font-size: 0.8em; line-height: 1.2em; color: gray; }
           article { border: 0; }
           td.avatar { vertical-align: middle; text-align: center; }
-          td.avatar img { width: 1.5em; height: 1.5em; vertical-align: middle; }
+          td.avatar img,
+          td.orgs img { width: 1.5em; height: 1.5em; vertical-align: middle; }
           .subtitle { font-size: 0.8em; line-height: 1em; color: gray; }
           .sorter { cursor: pointer; }
         </style>
@@ -70,6 +82,20 @@ SOFTWARE.
             </p>
           </header>
           <article>
+            <p id="org-head" style="visibility: hidden;">
+              <xsl:text>You only see people who contributed to </xsl:text>
+              <strong>
+                <span id="org">
+                  <xsl:text>@???</xsl:text>
+                </span>
+              </strong>
+              <xsl:text>. </xsl:text>
+              <xsl:text>Click </xsl:text>
+              <a href="index.html">
+                <xsl:text>here</xsl:text>
+              </a>
+              <xsl:text> to see all.</xsl:text>
+            </p>
             <table id="metrics">
               <colgroup>
                 <col/>
@@ -79,6 +105,7 @@ SOFTWARE.
                   <xsl:sort select="."/>
                   <col/>
                 </xsl:for-each>
+                <col/>
               </colgroup>
               <thead>
                 <xsl:apply-templates select="cobench/titles"/>
@@ -86,7 +113,7 @@ SOFTWARE.
               <xsl:apply-templates select="cobench/coders"/>
               <tfoot>
                 <xsl:apply-templates select="cobench/totals"/>
-              <xsl:apply-templates select="cobench/averages"/>
+                <xsl:apply-templates select="cobench/averages"/>
               </tfoot>
             </table>
           </article>
@@ -198,6 +225,9 @@ SOFTWARE.
           <xsl:value-of select="."/>
         </th>
       </xsl:for-each>
+      <th>
+        <xsl:text>Orgs</xsl:text>
+      </th>
     </tr>
   </xsl:template>
   <xsl:template match="cobench/totals">
@@ -211,6 +241,7 @@ SOFTWARE.
           <xsl:value-of select="$totals/w[@id=$t]"/>
         </td>
       </xsl:for-each>
+      <td/>
     </tr>
   </xsl:template>
   <xsl:template match="cobench/averages">
@@ -224,6 +255,7 @@ SOFTWARE.
           <xsl:value-of select="$averages/w[@id=$t]"/>
         </td>
       </xsl:for-each>
+      <td/>
     </tr>
   </xsl:template>
   <xsl:template match="cobench/coders">
@@ -260,6 +292,27 @@ SOFTWARE.
         <xsl:sort select="@id"/>
         <xsl:apply-templates select="."/>
       </xsl:for-each>
+      <td class="orgs">
+        <xsl:attribute name="class">
+          <xsl:text>orgs</xsl:text>
+          <xsl:for-each select="orgs/org">
+            <xsl:text> org-</xsl:text>
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+        </xsl:attribute>
+        <xsl:for-each select="orgs/org">
+          <xsl:sort select="."/>
+          <xsl:if test="position() &gt; 1">
+            <xsl:text> </xsl:text>
+          </xsl:if>
+          <a href="?org={.}" title="{.}">
+            <xsl:value-of select="substring(., 1, 2)"/>
+            <xsl:if test="string-length(.) &gt; 2">
+              <xsl:text>…</xsl:text>
+            </xsl:if>
+          </a>
+        </xsl:for-each>
+      </td>
     </tr>
   </xsl:template>
   <xsl:template match="m">

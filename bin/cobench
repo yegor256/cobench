@@ -96,6 +96,7 @@ def build_xml(opts, loog)
   loog.info("Reading GitHub data for the last #{opts[:days]} days")
   titles = {}
   data = {}
+  orgs = {}
   opts[:coder].each do |u|
     user = u.downcase
     loog.info("Scanning #{user}...")
@@ -116,17 +117,24 @@ def build_xml(opts, loog)
           { title: 'Pulls', total: Random.new.rand(100) },
           { title: 'Commits', total: Random.new.rand(100) },
           { title: 'HoC', total: Random.new.rand(100) },
-          { title: 'HoC', total: Random.new.rand(100) }
+          { title: 'HoC', total: Random.new.rand(100) },
+          { meta: true, title: 'Orgs', list: ['objectionary', 'artipie'] },
         ]
       else
         measures = m.take(loog)
       end
-      measures.each do |d|
+      measures.reject {|ms| ms.key?(:meta)}.each do |ms|
         before = 0
-        before += data[user][d[:title]][:total] if data[user][d[:title]] != nil
-        data[user][d[:title]] = { total: d[:total] + before, href: d[:href] }
-        titles[d[:title]] = d[:title]
-        loog.info("The value of #{user}/#{d[:title]} is #{d[:total]}")
+        before += data[user][ms[:title]][:total] if data[user][ms[:title]] != nil
+        data[user][ms[:title]] = { total: ms[:total] + before, href: ms[:href] }
+        titles[ms[:title]] = ms[:title]
+        loog.info("The value of #{user}/#{ms[:title]} is #{ms[:total]}")
+      end
+      measures.select {|ms| ms.key?(:meta)}.each do |ms|
+        if ms[:title] == 'Orgs'
+          orgs[user] = [] unless orgs.key?(user)
+        end
+        orgs[user] += ms[:list]
       end
     end
   end
@@ -212,6 +220,13 @@ def build_xml(opts, loog)
         data.each do |u, ms|
           xml.coder(id: u) do
             xml.parent.set_attribute('details', api.user(u).name) unless opts[:dry]
+            if orgs.key?(u)
+              xml.orgs do
+                orgs[u].uniq.each do |o|
+                  xml.org o
+                end
+              end
+            end
             xml.metrics do
               ms.each do |k, v|
                 xml.m(id: k) do
@@ -251,7 +266,7 @@ begin
   html = xslt.transform(Nokogiri::XML(xml), 'version' => "'#{Cobench::VERSION}'")
   loog.debug(html)
   front = File.join(home, 'index.html')
-  File.write(front, html)
+  File.write(front, html.to_html(indent: 0).gsub("\n", ''))
   loog.debug("HTML saved to #{front} (#{File.size(front)} bytes)")
 rescue StandardError => e
   loog.error(Backtrace.new(e))

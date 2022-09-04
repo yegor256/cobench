@@ -31,7 +31,7 @@ def version
   Gem::Specification.load(Dir['*.gemspec'].first).version
 end
 
-task default: %i[clean test features rubocop copyright]
+task default: %i[clean test features rubocop xcop copyright]
 
 require 'rake/testtask'
 desc 'Run all unit tests'
@@ -57,6 +57,13 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.fail_on_error = true
   task.requires << 'rubocop-rspec'
   task.options = ['--display-cop-names']
+end
+
+require 'xcop/rake_task'
+Xcop::RakeTask.new(:xcop) do |task|
+  task.license = 'LICENSE.txt'
+  task.includes = ['**/*.xml', '**/*.xsl', '**/*.xsd', '**/*.html']
+  task.excludes = ['cobench/**', 'coverage/**']
 end
 
 require 'cucumber/rake/task'
