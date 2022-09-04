@@ -58,7 +58,8 @@ SOFTWARE.
           });
         </script>
         <style>
-          td, th { font-family: monospace; font-size: 18px; }
+          td, th { font-family: monospace; font-size: 18px; line-height: 1em; }
+          td.top { vertical-align: middle; }
           .num { text-align: right; }
           .left { border-bottom: 0; }
           section { width: auto; }
@@ -265,7 +266,7 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="coder">
     <tr>
-      <td class="num">
+      <td class="num top">
         <xsl:variable name="score" select="metrics/m[@id='Score']"/>
         <xsl:variable name="pos" select="count(/cobench/coders/coder[metrics/m[@id='Score'] &gt; $score]) + 1"/>
         <xsl:attribute name="title">
