@@ -73,6 +73,7 @@ SOFTWARE.
             <table id="metrics">
               <colgroup>
                 <col/>
+                <col style="width: 2.5em;"/>
                 <col/>
                 <xsl:for-each select="cobench/titles/title">
                   <xsl:sort select="."/>
@@ -185,7 +186,12 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="cobench/titles">
     <tr>
-      <th colspan="2"/>
+      <th class="sorter num">
+        <xsl:text>Top</xsl:text>
+      </th>
+      <th colspan="2">
+        <xsl:text>Programmer</xsl:text>
+      </th>
       <xsl:for-each select="title">
         <xsl:sort select="."/>
         <th class="sorter num">
@@ -197,7 +203,7 @@ SOFTWARE.
   <xsl:template match="cobench/totals">
     <xsl:variable name="totals" select="."/>
     <tr>
-      <td colspan="2" style="text-align:right">Total:</td>
+      <td colspan="3" style="text-align:right">Total:</td>
       <xsl:for-each select="/cobench/titles/title">
         <xsl:sort select="."/>
         <xsl:variable name="t" select="."/>
@@ -210,7 +216,7 @@ SOFTWARE.
   <xsl:template match="cobench/averages">
     <xsl:variable name="averages" select="."/>
     <tr>
-      <td colspan="2" style="text-align:right">Average:</td>
+      <td colspan="3" style="text-align:right">Average:</td>
       <xsl:for-each select="/cobench/titles/title">
         <xsl:sort select="."/>
         <xsl:variable name="t" select="."/>
@@ -227,6 +233,14 @@ SOFTWARE.
   </xsl:template>
   <xsl:template match="coder">
     <tr>
+      <td class="num">
+        <xsl:variable name="score" select="metrics/m[@id='Score']"/>
+        <xsl:variable name="pos" select="count(/cobench/coders/coder[metrics/m[@id='Score'] &lt; $score]) + 1"/>
+        <xsl:if test="$pos &lt;= 8">
+          <xsl:text>#</xsl:text>
+          <xsl:value-of select="$pos"/>
+        </xsl:if>
+      </td>
       <td class="avatar">
         <img src="https://socatar.com/github/{@id}/64-64"/>
       </td>
