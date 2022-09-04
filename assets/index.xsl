@@ -267,7 +267,10 @@ SOFTWARE.
     <tr>
       <td class="num">
         <xsl:variable name="score" select="metrics/m[@id='Score']"/>
-        <xsl:variable name="pos" select="count(/cobench/coders/coder[metrics/m[@id='Score'] &lt; $score]) + 1"/>
+        <xsl:variable name="pos" select="count(/cobench/coders/coder[metrics/m[@id='Score'] &gt; $score]) + 1"/>
+        <xsl:attribute name="title">
+          <xsl:value-of select="$pos"/>
+        </xsl:attribute>
         <xsl:if test="$pos &lt;= 8">
           <xsl:text>#</xsl:text>
           <xsl:value-of select="$pos"/>
