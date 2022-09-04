@@ -80,6 +80,7 @@ def div(a, b)
 end
 
 def actual(ms)
+  return 0 if ms.nil?
   return ms[:actual] if ms.key?(:actual)
   ms[:total]
 end
@@ -170,11 +171,15 @@ def build_xml(opts, loog)
   averages = {
     'HpP': {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Pulls'])) },
-      title: 'HoC per Pull'
+      title: 'HoC per Pull Request'
     },
     'HpC': {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
       title: 'HoC per Commit'
+    },
+    'MpP': {
+      f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Pulls'])) },
+      title: 'Messages per Pull Request'
     }
   }
   data.each do |u, ms|
