@@ -37,13 +37,20 @@ class Cobench::Issues
     q = "in:comments type:issue author:#{@user} created:>#{from}"
     json = @api.search_issues(q)
     loog.debug("Found #{json.total_count} issues")
+    orgs = []
     total = json.items.count do |p|
       pr = p.url.split('/')[-1]
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{repo}#{pr}")
+      orgs << p.repository_url.split('/')[-2]
     end
     [
+      {
+        meta: true,
+        title: 'Orgs',
+        list: orgs
+      },
       {
         title: 'Issues',
         total: total,
