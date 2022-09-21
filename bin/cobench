@@ -49,6 +49,7 @@ opts = Slop.parse(args, strict: true, help: true) do |o|
   o.bool '--dry', 'Make no real round trips to GitHub'
   o.bool '--reuse', 'Don\'t fetch from GitHub, reuse the existing XML file'
   o.integer '--days', 'How many days to measure', default: 7
+  o.integer '--delay', 'Delay between HTTP calls to GitHub API, in milliseconds', default: 1000
   o.string '--to', 'Directory where to save all files to', default: './cobench'
   o.string '--token', 'GitHub authentication token'
   o.array '--coder', 'GitHub nickname of a coder to track'
@@ -93,7 +94,7 @@ def build_xml(opts, loog)
     loog.warn("Connecting to GitHub without a token, this may lead to errors, use --token")
   end
   api.auto_paginate = true
-  api = Obk.new(api, pause: 2000)
+  api = Obk.new(api, pause: opts[:delay])
   loog.info("Reading GitHub data for the last #{opts[:days]} days")
   titles = {}
   data = {}
