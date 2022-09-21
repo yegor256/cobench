@@ -16,7 +16,7 @@ Feature: Simple Reporting
     And Exit code is zero
 
   Scenario: Simple report through real GitHub API
-    When I run bin/cobench with "--coder=yegor256 --include=*/* --days=1 --verbose"
+    When I run bin/cobench with "--coder=yegor256 --include=*/* --days=1 --verbose --delay=5000"
     Then Stdout contains "XML saved to"
     And Exit code is zero
 
