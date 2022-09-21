@@ -169,6 +169,10 @@ def build_xml(opts, loog)
     data[u]['Score'] = { total: score }
   end
   averages = {
+    'CpP': {
+      f: lambda { |ms| div(actual(ms['Commits']), actual(ms['Pulls'])) },
+      title: 'Commits per Pull Request'
+    },
     'HpP': {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Pulls'])) },
       title: 'HoC per Pull Request'
@@ -177,9 +181,9 @@ def build_xml(opts, loog)
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
       title: 'HoC per Commit'
     },
-    'MpP': {
-      f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Pulls'])) },
-      title: 'Messages per Pull Request'
+    'MpR': {
+      f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Reviews'])) },
+      title: 'Messages per Review'
     }
   }
   data.each do |u, ms|
