@@ -199,7 +199,10 @@ SOFTWARE.
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="."/>
                 <xsl:text>"</xsl:text>
-                <xsl:text> stands for </xsl:text>
+                <xsl:if test="position() = 1">
+                  <xsl:text> stands</xsl:text>
+                </xsl:if>
+                <xsl:text> for </xsl:text>
                 <xsl:value-of select="@subtitle"/>
               </xsl:for-each>
               <xsl:text>.</xsl:text>
