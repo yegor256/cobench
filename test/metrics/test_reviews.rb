@@ -34,6 +34,6 @@ class TestReviews < Minitest::Test
     ms = m.take(Loog::VERBOSE)
     assert !ms.empty?
   rescue Octokit::TooManyRequests
-    # ignore it
+    skip
   end
 end
