@@ -181,9 +181,9 @@ def build_xml(opts, loog)
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
       title: 'HoC per Commit'
     },
-    'MpR': {
-      f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Reviews'])) },
-      title: 'Messages per Review'
+    'MpRP': {
+      f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Reviews']) + actual(ms['Pulls'])) },
+      title: 'Messages per Review+Pulls'
     }
   }
   data.each do |u, ms|

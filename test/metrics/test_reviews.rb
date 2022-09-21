@@ -33,5 +33,7 @@ class TestReviews < Minitest::Test
     m = Cobench::Reviews.new(api, 'graur', { days: 2 })
     ms = m.take(Loog::VERBOSE)
     assert !ms.empty?
+  rescue Octokit::TooManyRequests
+    # ignore it
   end
 end
