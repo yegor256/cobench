@@ -23,5 +23,5 @@
 # Copyright:: Copyright (c) 2022 Yegor Bugayenko
 # License:: MIT
 module Cobench
-  VERSION = '0.0.0'.freeze
+  VERSION = '0.0.37'.freeze
 end
