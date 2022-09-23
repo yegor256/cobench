@@ -44,6 +44,7 @@ class Cobench::Reviews
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{repo}##{pr} reviewed by @#{@user}")
       posted = @api.pull_request_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
+      posted += @api.issue_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
       loog.debug("#{posted} messages posted by @#{@user} to #{repo}##{pr}")
       msgs += posted
     end
