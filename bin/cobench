@@ -80,8 +80,14 @@ def div(a, b)
   a / b
 end
 
+def zero?(ms)
+  return true if ms.nil?
+  return true if ms.key?(:actual) == 0
+  false
+end
+
 def actual(ms)
-  return 0 if ms.nil?
+  return 0 if zero?(ms)
   return ms[:actual] if ms.key?(:actual)
   ms[:total]
 end
@@ -172,24 +178,31 @@ def build_xml(opts, loog)
   averages = {
     'CpP': {
       f: lambda { |ms| div(actual(ms['Commits']), actual(ms['Pulls'])) },
-      title: 'Commits per Pull Request'
+      title: 'Commits per Pull Request',
+      hideZero: lambda { |ms| zero?(ms['Commits']) || zero?(ms['Pulls']) }
     },
     'HpP': {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Pulls'])) },
-      title: 'HoC per Pull Request'
+      title: 'HoC per Pull Request',
+      hideZero: lambda { |ms| zero?(ms['HoC']) || zero?(ms['Pulls']) }
     },
     'HpC': {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
-      title: 'HoC per Commit'
+      title: 'HoC per Commit',
+      hideZero: lambda { |ms| zero?(ms['HoC']) || zero?(ms['Commits']) }
     },
     'MpRP': {
       f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Reviews']) + actual(ms['Pulls'])) },
-      title: 'Messages per Review+Pulls'
+      title: 'Messages per Review+Pulls',
+      hideZero: lambda { |ms| zero?(ms['Msgs']) || (zero?(ms['Reviews']) && zero?(ms['Pulls'])) }
     }
   }
   data.each do |u, ms|
     averages.each do |k, a|
-      data[u][k] = { total: a[:f].call(ms) }
+      data[u][k] = {
+        total: a[:f].call(ms),
+        hideZero: a[:hideZero].call(ms),
+      }
     end
   end
   builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
@@ -243,6 +256,7 @@ def build_xml(opts, loog)
                 xml.m(id: k) do
                   xml.parent.set_attribute('actual', v[:actual]) unless v[:actual].nil?
                   xml.parent.set_attribute('href', v[:href]) unless v[:href].nil?
+                  xml.parent.set_attribute('hideZero', 'yes') unless v[:hideZero].nil? || !v[:hideZero]
                   xml.text v[:total]
                 end
               end

@@ -334,15 +334,25 @@ SOFTWARE.
     </tr>
   </xsl:template>
   <xsl:template match="m">
+    <xsl:variable name="value">
+      <xsl:choose>
+        <xsl:when test="@hideZero and .='0'">
+          <!-- nothing -->
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="body">
       <xsl:choose>
         <xsl:when test="@href">
           <a href="{@href}">
-            <xsl:value-of select="."/>
+            <xsl:value-of select="$value"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="."/>
+          <xsl:value-of select="$value"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
