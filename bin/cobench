@@ -82,7 +82,7 @@ end
 
 def zero?(ms)
   return true if ms.nil?
-  return true if ms.key?(:actual) == 0
+  return true unless ms.key?(:actual)
   false
 end
 
@@ -122,7 +122,7 @@ def build_xml(opts, loog)
       if opts.dry?
         measures = [
           { title: 'Issues', total: Random.new.rand(100), href: 'https://github.com/' },
-          { title: 'Pulls', total: Random.new.rand(100) },
+          { title: 'Pulls', total: 0 },
           { title: 'Commits', total: Random.new.rand(100) },
           { title: 'HoC', total: Random.new.rand(100) },
           { title: 'HoC', total: Random.new.rand(100) },
@@ -176,22 +176,22 @@ def build_xml(opts, loog)
     data[u]['Score'] = { total: score }
   end
   averages = {
-    'CpP': {
+    'CpP' => {
       f: lambda { |ms| div(actual(ms['Commits']), actual(ms['Pulls'])) },
       title: 'Commits per Pull Request',
       hideZero: lambda { |ms| zero?(ms['Commits']) || zero?(ms['Pulls']) }
     },
-    'HpP': {
+    'HpP' => {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Pulls'])) },
       title: 'HoC per Pull Request',
       hideZero: lambda { |ms| zero?(ms['HoC']) || zero?(ms['Pulls']) }
     },
-    'HpC': {
+    'HpC' => {
       f: lambda { |ms| div(actual(ms['HoC']), actual(ms['Commits'])) },
       title: 'HoC per Commit',
       hideZero: lambda { |ms| zero?(ms['HoC']) || zero?(ms['Commits']) }
     },
-    'MpRP': {
+    'MpRP' => {
       f: lambda { |ms| div(actual(ms['Msgs']), actual(ms['Reviews']) + actual(ms['Pulls'])) },
       title: 'Messages per Review+Pulls',
       hideZero: lambda { |ms| zero?(ms['Msgs']) || (zero?(ms['Reviews']) && zero?(ms['Pulls'])) }
