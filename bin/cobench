@@ -82,7 +82,8 @@ end
 
 def zero?(ms)
   return true if ms.nil?
-  return true unless ms.key?(:actual)
+  return true if ms[:total] == 0
+  return true if ms.key?(:actual) && ms[:actual] == 0
   false
 end
 
