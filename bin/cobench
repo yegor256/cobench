@@ -167,7 +167,8 @@ def build_xml(opts, loog)
     'Issues' => 50,
     'Commits' => 5,
     'Reviews' => 150,
-    'Msgs' => 5
+    'Msgs' => 5,
+    'LcP' => 0,
   }
   data.each do |u, ms|
     score = ms.map do |t, h|
