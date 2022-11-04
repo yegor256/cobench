@@ -48,7 +48,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'octokit', '~>4.0'
   s.add_runtime_dependency 'rainbow', '~>3.0'
   s.add_runtime_dependency 'slop', '~>4.4'
-  s.add_runtime_dependency 'xcop', '~>0.6'
   s.add_development_dependency 'codecov', '0.6.0'
   s.add_development_dependency 'cucumber', '8.0.0'
   s.add_development_dependency 'minitest', '5.15.0'
@@ -56,4 +55,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc', '6.4.0'
   s.add_development_dependency 'rubocop', '1.32.0'
   s.add_development_dependency 'rubocop-rspec', '2.11.1'
+  s.add_development_dependency 'xcop', '0.7.1'
 end
