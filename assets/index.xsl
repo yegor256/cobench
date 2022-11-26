@@ -202,6 +202,7 @@ SOFTWARE.
             <p>
               <xsl:text>Score = </xsl:text>
               <xsl:for-each select="cobench/weights/w[. != '0']">
+                <xsl:sort select="@id" data-type="number" order="descending"/>
                 <xsl:if test="position() &gt; 1">
                   <xsl:text> + </xsl:text>
                 </xsl:if>
