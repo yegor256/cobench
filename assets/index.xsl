@@ -44,7 +44,15 @@ SOFTWARE.
         </script>
         <script type="text/javascript">
           $(function() {
-            $("#metrics").tablesorter();
+            $("#metrics").tablesorter({
+              textExtraction: function(node) {
+                var attr = $(node).attr('data-sort-value');
+                if (typeof attr !== 'undefined' &amp;&amp; attr !== false) {
+                  return attr;
+                }
+                return $(node).text();
+              }
+            });
           });
           $(function() {
             let params = (new URL(document.location)).searchParams;
@@ -371,6 +379,16 @@ SOFTWARE.
       </xsl:choose>
     </xsl:variable>
     <td class="num">
+      <xsl:attribute name="data-sort-value">
+        <xsl:choose>
+          <xsl:when test="@actual">
+            <xsl:value-of select="@actual"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="$value"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
       <xsl:choose>
         <xsl:when test="@actual">
           <span class="firebrick">
