@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require_relative 'version.rb'
+require_relative 'version'
 
 # Mask to apply for a repo name.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
