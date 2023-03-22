@@ -314,7 +314,9 @@ SOFTWARE.
         </xsl:if>
       </td>
       <td class="avatar">
-        <img src="https://socatar.com/github/{@id}/64-64"/>
+        <img src="https://github.com/{@id}.png"
+             width="64"
+             height="64"/>
       </td>
       <td>
         <a href="https://github.com/{@id}">
