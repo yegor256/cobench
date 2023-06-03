@@ -148,11 +148,11 @@ SOFTWARE.
                 <xsl:text>hits of code</xsl:text>
               </a>
               <xsl:text>. </xsl:text>
-              <xsl:text>"Issues" is the total number of issues submitted by the user. </xsl:text>
+              <xsl:text>"Issues" is the total number of </xsl:text>
               <a href="https://docs.github.com/en/issues">
                 <xsl:text>issues</xsl:text>
               </a>
-              <xsl:text>. </xsl:text>
+              <xsl:text> submitted by the user. </xsl:text>
               <xsl:text>"LcP" is an average lifecycle of a pull request in hours. </xsl:text>
               <xsl:text>"Msgs" is the total number of messages posted in pull requests where the user was a reviewer. </xsl:text>
               <xsl:text>"Pulls" is the total number of </xsl:text>
