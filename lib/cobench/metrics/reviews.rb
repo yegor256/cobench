@@ -43,6 +43,11 @@ class Cobench::Reviews
       repo = p.repository_url.split('/')[-2..-1].join('/')
       next unless Cobench::Match.new(@opts, loog).matches?(repo)
       loog.debug("Including #{repo}##{pr} reviewed by @#{@user}")
+      reviews = @api.pull_request_reviews(repo, pr).count { |c| c[:user][:login].downcase == @user }
+      if reviews.zero?
+        loog.debug("There are no reviews in #{repo}##{pr} by @#{@user}")
+        next
+      end
       posted = @api.pull_request_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
       posted += @api.issue_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
       loog.debug("#{posted} messages posted by @#{@user} to #{repo}##{pr}")
