@@ -65,7 +65,7 @@ class Cobench::Pulls
       },
       {
         title: 'LcP',
-        total: lcps.size.zero? ? 0 : ((lcps.inject(&:+) / lcps.size) / (60 * 60)).to_i
+        total: lcps.empty? ? 0 : ((lcps.inject(&:+) / lcps.size) / (60 * 60)).to_i
       },
       {
         title: 'HoC',
