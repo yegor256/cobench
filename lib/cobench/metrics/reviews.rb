@@ -48,6 +48,11 @@ class Cobench::Reviews
         loog.debug("There are no reviews in #{repo}##{pr} by @#{@user}")
         next
       end
+      pr_json = @api.pull_request(repo, pr)
+      if pr_json[:user][:login] == @user
+        loog.debug("There PR is authored by @#{@user}, skipping it (GitHub API mistake)")
+        next
+      end
       posted = @api.pull_request_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
       posted += @api.issue_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
       loog.debug("#{posted} messages posted by @#{@user} to #{repo}##{pr}")
