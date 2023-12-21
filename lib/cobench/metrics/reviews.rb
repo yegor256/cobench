@@ -50,7 +50,7 @@ class Cobench::Reviews
       end
       pr_json = @api.pull_request(repo, pr)
       if pr_json[:user][:login] == @user
-        loog.debug("There PR is authored by @#{@user}, skipping it (GitHub API mistake)")
+        loog.debug("PR #{repo}##{pr} is authored by @#{@user}, skipping it (GitHub API mistake)")
         next
       end
       posted = @api.pull_request_comments(repo, pr).count { |c| c[:user][:login].downcase == @user }
