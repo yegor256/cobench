@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 Yegor Bugayenko
+# Copyright (c) 2022-2024 Yegor Bugayenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -24,7 +24,7 @@ require_relative '../lib/cobench/match'
 
 # Test for Match.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
-# Copyright:: Copyright (c) 2022-2023 Yegor Bugayenko
+# Copyright:: Copyright (c) 2022-2024 Yegor Bugayenko
 # License:: MIT
 class TestMatch < Minitest::Test
   def test_positive

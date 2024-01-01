@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Copyright (c) 2022-2023 Yegor Bugayenko
+# Copyright (c) 2022-2024 Yegor Bugayenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -42,7 +42,7 @@ end
 args = config('~/.cobench') + config('.cobench') + ARGV
 
 opts = Slop.parse(args, strict: true, help: true) do |o|
-  o.banner = "Usage (#{Cobench::VERSION}): cobench [options]"
+  o.banner = "Usage (#{Cobench::VERSION}): cobench [options] [command]"
   o.bool '-h', '--help', 'Show these instructions'
   o.bool '--version', 'Show current version'
   o.bool '--verbose', 'Print as much log messages as possible'
@@ -93,7 +93,7 @@ def actual(ms)
   ms[:total]
 end
 
-def build_xml(opts, loog)
+def build(opts, loog)
   if opts.token?
     api = Octokit::Client.new(:access_token => opts[:token])
   else
@@ -272,6 +272,7 @@ def build_xml(opts, loog)
   loog.debug(xml)
   xml
 end
+
 begin
   home = File.absolute_path(opts[:to])
   loog.debug("All files generated will be saved to #{home}")
@@ -285,11 +286,12 @@ begin
   if opts[:reuse]
     xml = File.read(index)
   else
-    xml = build_xml(opts, loog)
+    command = opts.arguments.empty? ? 'build' : opts.arguments[0]
+    xml = Kernel.send(command.to_sym, opts, loog)
     File.write(index, xml)
     loog.debug("XML saved to #{index} (#{File.size(index)} bytes)")
   end
-  xslt = Nokogiri::XSLT(File.read(File.join(__dir__, '../assets/index.xsl')))
+  xslt = Nokogiri::XSLT(File.read(File.join(__dir__, '../assets/build.xsl')))
   html = xslt.transform(Nokogiri::XML(xml), 'version' => "'#{Cobench::VERSION}'")
   loog.debug(html)
   front = File.join(home, 'index.html')
