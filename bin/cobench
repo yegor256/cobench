@@ -273,6 +273,81 @@ def build(opts, loog)
   xml
 end
 
+# Put together a few historical XML files and generate a new
+# XML report, with a summary of all the data from the aggregated files.
+def aggregate(opts, loog)
+  data = {}
+  Dir['**/*.xml'].each do |f|
+    xml = Nokogiri::XML.new(f)
+    time = Time.parse(xml.cobench['time'])
+    days = xml.cobench['days'].to_i
+  end
+  builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
+    xml.cobench(time: Time.now) do
+      xml.titles do
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
+          xml.title do
+            xml.parent.set_attribute('subtitle', averages[t][:title]) if averages.key?(t)
+            xml.text t
+          end
+        end
+      end
+      xml.weights do
+        weights.each do |t, w|
+          xml.w(id: t) do
+            xml.text(w)
+          end
+        end
+      end
+      xml.totals do
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
+          next if t == 'Score'
+          next if averages.key?(t)
+          xml.w(id: t) do
+            xml.text(data.values.map { |ms| actual(ms[t]) }.inject(&:+))
+          end
+        end
+      end
+      xml.averages do
+        data.map { |_, ms| ms.keys }.flatten.uniq.each do |t|
+          next if t == 'Score'
+          xml.w(id: t) do
+            vals = data.values.map { |ms| actual(ms[t]) }.select { |v| v > 0 }
+            xml.text(div(vals.inject(&:+), vals.count))
+          end
+        end
+      end
+      xml.coders do
+        data.each do |u, ms|
+          xml.coder(id: u) do
+            xml.parent.set_attribute('details', api.user(u).name) unless opts[:dry]
+            if orgs.key?(u)
+              xml.orgs do
+                orgs[u].uniq.each do |o|
+                  xml.org o
+                end
+              end
+            end
+            xml.metrics do
+              ms.each do |k, v|
+                xml.m(id: k) do
+                  xml.parent.set_attribute('actual', v[:actual]) unless v[:actual].nil?
+                  xml.parent.set_attribute('href', v[:href]) unless v[:href].nil?
+                  xml.parent.set_attribute('hideZero', 'yes') unless v[:hideZero].nil? || !v[:hideZero]
+                  xml.text v[:total]
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  xml = builder.to_xml
+  loog.debug(xml)
+  xml
+end
+
 begin
   home = File.absolute_path(opts[:to])
   loog.debug("All files generated will be saved to #{home}")

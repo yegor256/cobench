@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobench time="2023-06-03 23:48:44 +0000" days="28">
+  <titles>
+    <title>Commits</title>
+    <title>HoC</title>
+    <title>Reviews</title>
+    <title>Msgs</title>
+    <title>Issues</title>
+    <title>Pulls</title>
+    <title>LcP</title>
+    <title>Score</title>
+    <title subtitle="Commits per Pull Request">CpP</title>
+    <title subtitle="HoC per Pull Request">HpP</title>
+    <title subtitle="HoC per Commit">HpC</title>
+    <title subtitle="Messages per Review+Pulls">MpRP</title>
+  </titles>
+  <weights>
+    <w id="HoC">1</w>
+    <w id="Pulls">250</w>
+    <w id="Issues">50</w>
+    <w id="Commits">5</w>
+    <w id="Reviews">150</w>
+    <w id="Msgs">5</w>
+    <w id="LcP">0</w>
+  </weights>
+  <totals>
+    <w id="Commits">330</w>
+    <w id="HoC">33353</w>
+    <w id="Reviews">166</w>
+    <w id="Msgs">353</w>
+    <w id="Issues">63</w>
+    <w id="Pulls">101</w>
+    <w id="LcP">5195</w>
+  </totals>
+  <averages>
+    <w id="Commits">27</w>
+    <w id="HoC">2565</w>
+    <w id="Reviews">11</w>
+    <w id="Msgs">23</w>
+    <w id="Issues">5</w>
+    <w id="Pulls">7</w>
+    <w id="LcP">399</w>
+    <w id="CpP">4</w>
+    <w id="HpP">382</w>
+    <w id="HpC">163</w>
+    <w id="MpRP">3</w>
+  </averages>
+  <coders>
+    <coder id="volodya-lombrozo" details="Volodya Lombrozo">
+      <orgs>
+        <org>objectionary</org>
+        <org>yegor256</org>
+      </orgs>
+      <metrics>
+        <m id="Commits" href="https://github.com/search?q=author%3Avolodya-lombrozo+author-date%3A%3E2023-05-06+is%3Apublic+merge%3Afalse">83</m>
+        <m id="HoC">4847</m>
+        <m id="Reviews" href="https://github.com/search?q=reviewed-by%3Avolodya-lombrozo+merged%3A%3E2023-05-06">13</m>
+        <m id="Msgs">98</m>
+        <m id="Issues" href="https://github.com/search?q=in%3Acomments+type%3Aissue+author%3Avolodya-lombrozo+created%3A%3E2023-05-06">9</m>
+        <m id="Pulls" href="https://github.com/search?q=in%3Acomments+type%3Apr+author%3Avolodya-lombrozo+is%3Amerged+merged%3A%3E2023-05-06">20</m>
+        <m id="LcP">70</m>
+        <m id="Score">13152</m>
+        <m id="CpP">4</m>
+        <m id="HpP">242</m>
+        <m id="HpC">58</m>
+        <m id="MpRP">2</m>
+      </metrics>
+    </coder>
+    <coder id="yegor256" details="Yegor Bugayenko">
+      <orgs>
+        <org>objectionary</org>
+        <org>yegor256</org>
+      </orgs>
+      <metrics>
+        <m id="Commits" href="https://github.com/search?q=author%3Ayegor256+author-date%3A%3E2023-05-06+is%3Apublic+merge%3Afalse">61</m>
+        <m id="HoC">2227</m>
+        <m id="Reviews" href="https://github.com/search?q=reviewed-by%3Ayegor256+merged%3A%3E2023-05-06">13</m>
+        <m id="Msgs">36</m>
+        <m id="Issues" href="https://github.com/search?q=in%3Acomments+type%3Aissue+author%3Ayegor256+created%3A%3E2023-05-06">11</m>
+        <m id="Pulls" href="https://github.com/search?q=in%3Acomments+type%3Apr+author%3Ayegor256+is%3Amerged+merged%3A%3E2023-05-06">3</m>
+        <m id="LcP">2</m>
+        <m id="Score">5962</m>
+        <m id="CpP">20</m>
+        <m id="HpP">742</m>
+        <m id="HpC">36</m>
+        <m id="MpRP">2</m>
+      </metrics>
+    </coder>
+  </coders>
+</cobench>
