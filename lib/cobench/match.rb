@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 Yegor Bugayenko
+# Copyright (c) 2022-2025 Yegor Bugayenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -22,7 +22,7 @@ require_relative 'mask'
 
 # Match of masks.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
-# Copyright:: Copyright (c) 2022-2024 Yegor Bugayenko
+# Copyright:: Copyright (c) 2022-2025 Yegor Bugayenko
 # License:: MIT
 class Cobench::Match
   def initialize(opts, loog)
