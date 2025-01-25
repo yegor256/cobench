@@ -10,7 +10,6 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/cobench/blob/master/LICENSE.txt)
 [![Maintainability](https://api.codeclimate.com/v1/badges/396ec0584e0a84adc723/maintainability)](https://codeclimate.com/github/yegor256/cobench/maintainability)
 [![Test Coverage](https://img.shields.io/codecov/c/github/yegor256/cobench.svg)](https://codecov.io/github/yegor256/cobench?branch=master)
-![Lines of code](https://img.shields.io/tokei/lines/github/yegor256/cobench)
 [![Hits-of-Code](https://hitsofcode.com/github/yegor256/cobench)](https://hitsofcode.com/view/github/yegor256/cobench)
 
 This simple script will help you collect statistics about your
