@@ -30,4 +30,3 @@ Feature: Simple Reporting
     When I run bin/cobench with "--dry"
     Then Stdout contains "XML saved to"
     And Exit code is zero
-
