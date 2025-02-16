@@ -157,7 +157,7 @@ DEPENDENCIES
   rubocop-rake (> 0)
   rubocop-rspec (> 0)
   simplecov (= 0.22.0)
-  xcop (= 0.7.1)
+  xcop (> 0)
 
 BUNDLED WITH
    2.5.16
