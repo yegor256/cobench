@@ -2,7 +2,10 @@
 .DS_Store
 .bundle/
 .idea/
+.yardoc/
 /cobench/
 coverage/
+doc/
+node_modules/
 rdoc/
 vendor/
