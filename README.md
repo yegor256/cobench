@@ -1,12 +1,12 @@
 <img alt="cobench logo" src="/logo.svg" width="64px"/>
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/cobench)](http://www.rultor.com/p/yegor256/cobench)
+[![DevOps By Rultor.com](https://www.rultor.com/b/yegor256/cobench)](https://www.rultor.com/p/yegor256/cobench)
 [![We recommend RubyMine](https://www.elegantobjects.org/rubymine.svg)](https://www.jetbrains.com/ruby/)
 
 [![rake](https://github.com/yegor256/cobench/actions/workflows/rake.yml/badge.svg)](https://github.com/yegor256/cobench/actions/workflows/rake.yml)
-[![PDD status](http://www.0pdd.com/svg?name=yegor256/cobench)](http://www.0pdd.com/p?name=yegor256/cobench)
-[![Gem Version](https://badge.fury.io/rb/cobench.svg)](http://badge.fury.io/rb/cobench)
+[![PDD status](https://www.0pdd.com/svg?name=yegor256/cobench)](https://www.0pdd.com/p?name=yegor256/cobench)
+[![Gem Version](https://badge.fury.io/rb/cobench.svg)](https://badge.fury.io/rb/cobench)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/cobench/blob/master/LICENSE.txt)
 [![Maintainability](https://api.codeclimate.com/v1/badges/396ec0584e0a84adc723/maintainability)](https://codeclimate.com/github/yegor256/cobench/maintainability)
 [![Test Coverage](https://img.shields.io/codecov/c/github/yegor256/cobench.svg)](https://codecov.io/github/yegor256/cobench?branch=master)
