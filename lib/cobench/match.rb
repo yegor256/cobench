@@ -1,11 +1,11 @@
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025 Yegor Bugayenko
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026 Yegor Bugayenko
 # SPDX-License-Identifier: MIT
 
 require_relative 'mask'
 
 # Match of masks.
 # Author:: Yegor Bugayenko (yegor256@gmail.com)
-# Copyright:: Copyright (c) 2022-2025 Yegor Bugayenko
+# Copyright:: Copyright (c) 2022-2026 Yegor Bugayenko
 # License:: MIT
 class Cobench::Match
   def initialize(opts, loog)
