@@ -24,7 +24,8 @@ Layout/EmptyLineAfterGuardClause:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
-require:
+plugins:
   - rubocop-rake
   - rubocop-minitest
   - rubocop-performance
+  - rubocop-elegant

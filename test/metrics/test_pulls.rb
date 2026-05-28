@@ -1,9 +1,9 @@
+require 'loog'
 # SPDX-FileCopyrightText: Copyright (c) 2022-2026 Yegor Bugayenko
 # SPDX-License-Identifier: MIT
 
 require 'minitest/autorun'
 require 'octokit'
-require 'loog'
 require_relative '../../lib/cobench/metrics/pulls'
 
 # Test for Pulls.
@@ -12,13 +12,11 @@ require_relative '../../lib/cobench/metrics/pulls'
 # License:: MIT
 class TestPulls < Minitest::Test
   def test_real
-    api = Octokit::Client.new
-    m = Cobench::Pulls.new(api, 'yegor256', { days: 5 })
-    ms = m.take(Loog::VERBOSE)
-    assert !ms.empty?
-    p ms
+    ms = Cobench::Pulls.new(Octokit::Client.new, 'yegor256', { days: 5 }).take(Loog::VERBOSE)
+    refute_empty(ms)
+    p(ms)
   rescue Octokit::TooManyRequests => e
-    puts e.message
-    skip
+    puts(e.message)
+    skip('GitHub API rate limit exceeded')
   end
 end

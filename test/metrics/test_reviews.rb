@@ -1,9 +1,9 @@
+require 'loog'
 # SPDX-FileCopyrightText: Copyright (c) 2022-2026 Yegor Bugayenko
 # SPDX-License-Identifier: MIT
 
 require 'minitest/autorun'
 require 'octokit'
-require 'loog'
 require_relative '../../lib/cobench/metrics/reviews'
 
 # Test for Reviews.
@@ -12,10 +12,7 @@ require_relative '../../lib/cobench/metrics/reviews'
 # License:: MIT
 class TestReviews < Minitest::Test
   def test_real
-    api = Octokit::Client.new
-    m = Cobench::Reviews.new(api, 'graur', { days: 2 })
-    ms = m.take(Loog::VERBOSE)
-    assert !ms.empty?
+    refute_empty(Cobench::Reviews.new(Octokit::Client.new, 'graur', { days: 2 }).take(Loog::VERBOSE))
   rescue Octokit::TooManyRequests
     skip
   end

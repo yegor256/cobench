@@ -1,8 +1,8 @@
+require 'loog'
 # SPDX-FileCopyrightText: Copyright (c) 2022-2026 Yegor Bugayenko
 # SPDX-License-Identifier: MIT
 
 require 'minitest/autorun'
-require 'loog'
 require_relative '../lib/cobench/match'
 
 # Test for Match.
@@ -11,14 +11,10 @@ require_relative '../lib/cobench/match'
 # License:: MIT
 class TestMatch < Minitest::Test
   def test_positive
-    loog = Loog::NULL
-    opts = { include: [], exclude: [] }
-    assert Cobench::Match.new(opts, loog).matches?('foo/bar')
+    assert(Cobench::Match.new({ include: [], exclude: [] }, Loog::NULL).matches?('foo/bar'))
   end
 
   def test_negative
-    loog = Loog::NULL
-    opts = { include: ['*/*'], exclude: ['foo/*'] }
-    assert !Cobench::Match.new(opts, loog).matches?('foo/bar')
+    refute(Cobench::Match.new({ include: ['*/*'], exclude: ['foo/*'] }, Loog::NULL).matches?('foo/bar'))
   end
 end
