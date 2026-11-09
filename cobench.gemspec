@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency('iri', '~>0.5')
   s.add_dependency('loog', '~>0.2')
   s.add_dependency('nokogiri', '~>1.10')
-  s.add_dependency('obk', '0.3.0')
-  s.add_dependency('octokit', '~>6.0')
+  s.add_dependency('obk', '~>0.3.2')
+  s.add_dependency('octokit', '>=6.0', '<11')
   s.add_dependency('rainbow', '~>3.0')
   s.add_dependency('slop', '~>4.4')
 end
