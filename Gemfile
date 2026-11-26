@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'cucumber', '~>12.0', require: false
-gem 'minitest', '~>5.20', require: false
+gem 'minitest', '~>6.0', require: false
 gem 'rake', '~>13.1', require: false
 gem 'rdoc', '~>8.0', require: false
 gem 'rubocop', '~>1.57', require: false
